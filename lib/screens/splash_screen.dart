@@ -3,22 +3,20 @@ import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
-  static MaterialPage page() {
-    return MaterialPage(
-      child: const SplashPage(),
-      name: AppPages.splashPath,
-      key: ValueKey(AppPages.splashPath),
-    );
-  }
+  static get page => MaterialPage(
+        child: const SplashScreen(),
+        name: AppPages.splashPath,
+        key: ValueKey(AppPages.splashPath),
+      );
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

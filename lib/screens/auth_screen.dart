@@ -5,30 +5,24 @@ import 'package:flutter_social/widgets/signin_form.dart';
 import 'package:flutter_social/widgets/signup_form.dart';
 import 'package:provider/provider.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({Key? key}) : super(key: key);
 
-  static MaterialPage page() {
-    return MaterialPage(
-      child: const AuthPage(),
-      name: AppPages.authPath,
-      key: ValueKey(AppPages.authPath),
-    );
-  }
+  static get page => MaterialPage(
+        child: const AuthScreen(),
+        name: AppPages.authPath,
+        key: ValueKey(AppPages.authPath),
+      );
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthPageState extends State<AuthPage> {
-  final _authPageProvider = AuthPageProvider();
-
+class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => _authPageProvider),
-      ],
+    return ChangeNotifierProvider(
+      create: (_) => AuthPageProvider(),
       child: Consumer<AuthPageProvider>(
         builder: (context, authPageProvider, child) {
           return Scaffold(

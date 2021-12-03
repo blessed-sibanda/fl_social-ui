@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_social/navigation/app_link.dart';
-import 'package:flutter_social/pages/auth.dart';
-import 'package:flutter_social/pages/home.dart';
-import 'package:flutter_social/pages/splash.dart';
+import 'package:flutter_social/screens/auth_screen.dart';
+import 'package:flutter_social/screens/home_screen.dart';
+import 'package:flutter_social/screens/splash_screen.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 
 class AppRouter extends RouterDelegate<AppLink>
@@ -29,10 +29,10 @@ class AppRouter extends RouterDelegate<AppLink>
       key: navigatorKey,
       onPopPage: _handlePopPage,
       pages: [
-        if (!appProvider.isInitialized) SplashPage.page(),
+        if (!appProvider.isInitialized) SplashScreen.page,
         if (appProvider.isInitialized && !appProvider.isLoggedIn)
-          AuthPage.page(),
-        HomePage.page(),
+          AuthScreen.page,
+        HomeScreen.page,
       ],
     );
   }
