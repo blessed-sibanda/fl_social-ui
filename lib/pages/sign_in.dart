@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social/utils/form_validators.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -10,6 +11,9 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
+  String _error = '';
 
   @override
   void dispose() {
@@ -24,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
       body: SafeArea(
         child: Center(
           child: Form(
+            key: _formStateKey,
             child: Card(
               margin: const EdgeInsets.all(10.0),
               child: Padding(
@@ -37,17 +42,25 @@ class _SignInPageState extends State<SignInPage> {
                     Text('Sign In'.toUpperCase(),
                         style: Theme.of(context).textTheme.headline4),
                     const Divider(),
+                    if (_error.isNotEmpty)
+                      Text(_error, style: const TextStyle(color: Colors.red)),
                     TextFormField(
                       controller: _emailController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                       ),
+                      validator: (value) =>
+                          FormValidators.userEmailField(value),
                     ),
                     TextFormField(
                       controller: _passwordController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
+                      validator: (value) =>
+                          FormValidators.userPasswordField(value),
                     ),
                     const SizedBox(height: 20.0),
                     Row(

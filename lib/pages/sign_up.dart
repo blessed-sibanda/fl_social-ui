@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/models/user.dart';
 import 'package:flutter_social/services/users_api.dart';
+import 'package:flutter_social/utils/form_validators.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: const InputDecoration(
                         labelText: 'Name',
                       ),
-                      validator: _validateNameField,
+                      validator: (value) => FormValidators.userNameField(value),
                     ),
                     TextFormField(
                       controller: _emailController,
@@ -68,7 +69,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: const InputDecoration(
                         labelText: 'Email',
                       ),
-                      validator: _validateEmailField,
+                      validator: (value) =>
+                          FormValidators.userEmailField(value),
                     ),
                     TextFormField(
                       controller: _passwordController,
@@ -76,7 +78,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
-                      validator: _validatePasswordField,
+                      validator: (value) =>
+                          FormValidators.userPasswordField(value),
                     ),
                     const SizedBox(height: 20.0),
                     Row(
@@ -116,39 +119,9 @@ class _SignUpPageState extends State<SignUpPage> {
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
-          Navigator.of(context).pushNamed('/home');
+          Navigator.of(context).pushNamed('/signin');
         }
       });
     }
-  }
-
-  String? _validateNameField(String? value) {
-    if (value == null) return null;
-    if (value.isEmpty) {
-      return 'Name is required';
-    } else if (value.length < 3) {
-      return 'Name should be at least 3 characters long';
-    }
-    return null;
-  }
-
-  String? _validateEmailField(String? value) {
-    if (value == null) return null;
-    if (value.isEmpty) {
-      return 'Email is required';
-    } else if (!value.contains('@') || !value.contains('.')) {
-      return 'Provide a valid email address';
-    }
-    return null;
-  }
-
-  String? _validatePasswordField(String? value) {
-    if (value == null) return null;
-    if (value.isEmpty) {
-      return 'Password is required';
-    } else if (value.length < 6) {
-      return 'Password should be at least 6 characters long';
-    }
-    return null;
   }
 }
