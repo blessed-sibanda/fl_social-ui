@@ -5,7 +5,7 @@ import 'package:flutter_social/widgets/signin_form.dart';
 import 'package:flutter_social/widgets/signup_form.dart';
 import 'package:provider/provider.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
   static get page => MaterialPage(
@@ -14,11 +14,6 @@ class AuthScreen extends StatefulWidget {
         key: ValueKey(AppPages.authPath),
       );
 
-  @override
-  State<AuthScreen> createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
