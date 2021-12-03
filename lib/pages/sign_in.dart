@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social/services/auth_api.dart';
+import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/utils/form_validators.dart';
 
 class SignInPage extends StatefulWidget {
@@ -12,8 +14,16 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  late AuthApi _authApi;
+
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   String _error = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _authApi = AuthApi();
+  }
 
   @override
   void dispose() {
@@ -75,7 +85,7 @@ class _SignInPageState extends State<SignInPage> {
                         const SizedBox(width: 20.0),
                         ElevatedButton(
                           child: const Text('Sign In'),
-                          onPressed: () {},
+                          onPressed: _signIn,
                         ),
                       ],
                     ),
@@ -87,5 +97,20 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  void _signIn() {
+    if (_formStateKey.currentState!.validate()) {
+      _authApi
+          .signIn(_emailController.text, _passwordController.text)
+          .then((value) {
+        if (value is ServiceApiError) {
+          setState(() => _error = value.message);
+        } else {
+          print(value);
+          Navigator.of(context).pushNamed('/home');
+        }
+      });
+    }
   }
 }

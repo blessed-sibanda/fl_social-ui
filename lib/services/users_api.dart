@@ -1,28 +1,13 @@
 import 'package:flutter_social/models/user.dart';
+import 'package:flutter_social/services/base_api.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-class UsersApi {
-  final String baseUrl = 'http://192.168.43.72:3000/api';
-
+class UsersApi extends BaseApi {
   Future<dynamic> createUser(User user) async {
     var response = await http.post(
-      Uri.parse('$baseUrl/users'),
+      Uri.parse('$baseUrl/api/users'),
       body: user.toJson(),
     );
-
-    var jsonResponse = json.decode(response.body);
-
-    if (response.statusCode == 201) {
-      return jsonResponse['message'];
-    } else {
-      return ServiceApiError(jsonResponse['error'], response.statusCode);
-    }
+    return jsonResponse(response, dataKey: 'message');
   }
-}
-
-class ServiceApiError {
-  final String message;
-  final int code;
-  ServiceApiError(this.message, this.code);
 }

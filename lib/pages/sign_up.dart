@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/models/user.dart';
 import 'package:flutter_social/services/users_api.dart';
+import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/utils/form_validators.dart';
 
 class SignUpPage extends StatefulWidget {
