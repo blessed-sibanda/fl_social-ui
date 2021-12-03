@@ -15,19 +15,24 @@ class User {
     this.updatedAt,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        password: json['password'],
-        createdAt: json['createdAt'],
-        updatedAt: json['updatedAt'],
-      );
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      password: json['password'] as String?,
+      createdAt: json['createdAt'] as DateTime?,
+      updatedAt: json['updatedAt'] as DateTime?,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'email': email,
-        'password': password,
-      };
+  Map<String, dynamic> toJson() {
+    var userMap = {
+      'name': name,
+      'email': email,
+      'password': password,
+    };
+    if (id != null) userMap['id'] = id;
+    return userMap;
+  }
 }

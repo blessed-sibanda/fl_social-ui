@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social/models/user.dart';
+import 'package:flutter_social/services/users_api.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -11,6 +13,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  late UsersApi _usersApi;
+
+  @override
+  void initState() {
+    super.initState();
+    _usersApi = UsersApi();
+  }
 
   @override
   void dispose() {
@@ -70,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(width: 20.0),
                         ElevatedButton(
                           child: const Text('Sign Up'),
-                          onPressed: () {},
+                          onPressed: _signUpUser,
                         ),
                       ],
                     ),
@@ -82,5 +92,14 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  void _signUpUser() {
+    User user = User(
+      name: _nameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    _usersApi.createUser(user).then((value) => print(value));
   }
 }
