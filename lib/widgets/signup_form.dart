@@ -4,6 +4,8 @@ import 'package:flutter_social/providers/auth_page_provider.dart';
 import 'package:flutter_social/services/users_api.dart';
 import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/utils/form_validators.dart';
+import 'package:flutter_social/widgets/email_input_field.dart';
+import 'package:flutter_social/widgets/password_input_field.dart';
 import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -63,22 +65,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 validator: (value) => FormValidators.userNameField(value),
               ),
-              TextFormField(
-                controller: _emailController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                validator: (value) => FormValidators.userEmailField(value),
-              ),
-              TextFormField(
-                controller: _passwordController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                validator: (value) => FormValidators.userPasswordField(value),
-              ),
+              EmailInputField(emailController: _emailController),
+              PasswordInputField(controller: _passwordController),
               const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
