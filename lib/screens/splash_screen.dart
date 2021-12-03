@@ -29,13 +29,23 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         color: Colors.lightGreen.shade50,
         child: Center(
-          child: Text(
-            'Flutter Social',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-              color: Theme.of(context).primaryColor,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Flutter Social',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: Theme.of(context).primaryColor,
+              ),
+            ],
           ),
         ),
       ),
