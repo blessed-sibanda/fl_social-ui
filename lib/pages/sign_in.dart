@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final _nameController = TextEditingController();
+class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -28,15 +27,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Sign Up'.toUpperCase(),
+                    Text('Sign In'.toUpperCase(),
                         style: Theme.of(context).textTheme.headline4),
                     const Divider(),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                      ),
-                    ),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -54,14 +47,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          child: const Text('Sign-in instead'),
+                          child: const Text('Sign-up instead'),
                           onPressed: () {
-                            Navigator.of(context).pushNamed('/signin');
+                            Navigator.of(context).pushNamed('/');
                           },
                         ),
                         const SizedBox(width: 20.0),
                         ElevatedButton(
-                          child: const Text('Sign Up'),
+                          child: const Text('Sign In'),
                           onPressed: () {},
                         ),
                       ],

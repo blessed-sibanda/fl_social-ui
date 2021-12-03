@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/pages/home.dart';
+import 'package:flutter_social/pages/sign_in.dart';
 import 'package:flutter_social/pages/sign_up.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/x': (context) => const HomePage(),
         '/': (context) => const SignUpPage(),
+        '/signin': (context) => const SignInPage(),
       },
     );
   }
