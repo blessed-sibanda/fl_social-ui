@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/services/auth_api.dart';
 import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/utils/form_validators.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
+
+  static MaterialPage page() {
+    return MaterialPage(
+      child: const SignInPage(),
+      name: AppPages.signInPath,
+      key: ValueKey(AppPages.signInPath),
+    );
+  }
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -107,8 +118,7 @@ class _SignInPageState extends State<SignInPage> {
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
-          print(value);
-          Navigator.of(context).pushNamed('/home');
+          Provider.of<AppProvider>(context, listen: false).logIn();
         }
       });
     }
