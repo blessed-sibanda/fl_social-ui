@@ -42,50 +42,53 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formStateKey,
-      child: Card(
-        margin: const EdgeInsets.all(10.0),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 26.0,
-            vertical: 8.0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Sign Up'.toUpperCase(),
-                  style: Theme.of(context).textTheme.headline4),
-              const Divider(),
-              if (_error.isNotEmpty)
-                Text(_error, style: const TextStyle(color: Colors.red)),
-              TextFormField(
-                controller: _nameController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.name,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) => FormValidators.userNameField(value),
-              ),
-              EmailInputField(emailController: _emailController),
-              PasswordInputField(controller: _passwordController),
-              const SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    child: const Text('Sign-in instead'),
-                    onPressed: () {
-                      Provider.of<AuthPageProvider>(context, listen: false)
-                          .goToSignIn();
-                    },
-                  ),
-                  const SizedBox(width: 20.0),
-                  ElevatedButton(
-                    child: const Text('Sign Up'),
-                    onPressed: _signUpUser,
-                  ),
-                ],
-              ),
-            ],
+      child: SizedBox(
+        width: 450.0,
+        child: Card(
+          margin: const EdgeInsets.all(10.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30.0,
+              vertical: 20.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Sign Up'.toUpperCase(),
+                    style: Theme.of(context).textTheme.headline4),
+                const Divider(),
+                if (_error.isNotEmpty)
+                  Text(_error, style: const TextStyle(color: Colors.red)),
+                TextFormField(
+                  controller: _nameController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.name,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                  validator: (value) => FormValidators.userNameField(value),
+                ),
+                EmailInputField(emailController: _emailController),
+                PasswordInputField(controller: _passwordController),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: const Text('Sign-in instead'),
+                      onPressed: () {
+                        Provider.of<AuthPageProvider>(context, listen: false)
+                            .goToSignIn();
+                      },
+                    ),
+                    const SizedBox(width: 20.0),
+                    ElevatedButton(
+                      child: const Text('Sign Up'),
+                      onPressed: _signUpUser,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
