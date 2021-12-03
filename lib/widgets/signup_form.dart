@@ -60,9 +60,9 @@ class _SignUpFormState extends State<SignUpForm> {
               TextFormField(
                 controller: _nameController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                ),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) => FormValidators.userNameField(value),
               ),
               EmailInputField(emailController: _emailController),
@@ -93,7 +93,8 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _signUpUser() {
-    if (_formStateKey.currentState!.validate()) {
+    if ((_formStateKey.currentState != null) &&
+        (_formStateKey.currentState!.validate())) {
       User user = User(
         name: _nameController.text,
         email: _emailController.text,
@@ -103,9 +104,36 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
-          Provider.of<AuthPageProvider>(context, listen: false).goToSignIn();
+          _showDialog(value);
         }
       });
     }
+  }
+
+  Future<void> _showDialog(value) async {
+    var authPageProvider =
+        Provider.of<AuthPageProvider>(context, listen: false);
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return ChangeNotifierProvider<AuthPageProvider>(
+          create: (_) => authPageProvider,
+          child: AlertDialog(
+            title: Text(value),
+            content: const Text('You can now sign-in'),
+            actions: [
+              TextButton(
+                child: const Text('Sign In'),
+                onPressed: () {
+                  authPageProvider.goToSignIn();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
