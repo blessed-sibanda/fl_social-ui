@@ -46,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     TextFormField(
                       controller: _passwordController,
                       decoration: const InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Password',
                       ),
                     ),
                     const SizedBox(height: 20.0),

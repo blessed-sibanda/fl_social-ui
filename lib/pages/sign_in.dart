@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
                     TextFormField(
                       controller: _passwordController,
                       decoration: const InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Password',
                       ),
                     ),
                     const SizedBox(height: 20.0),
