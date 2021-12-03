@@ -33,7 +33,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
           onTap: _toggleObscurePassword,
           child: Icon(
             _obscurePassword ? Icons.visibility : Icons.visibility_off,
-            color: Colors.black,
+            color: Colors.black45,
           ),
         ),
       ),
