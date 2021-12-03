@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_social/navigation/app_link.dart';
+import 'package:flutter_social/pages/auth.dart';
 import 'package:flutter_social/pages/home.dart';
-import 'package:flutter_social/pages/sign_in.dart';
 import 'package:flutter_social/pages/splash.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 
@@ -31,7 +31,7 @@ class AppRouter extends RouterDelegate<AppLink>
       pages: [
         if (!appProvider.isInitialized) SplashPage.page(),
         if (appProvider.isInitialized && !appProvider.isLoggedIn)
-          SignInPage.page(),
+          AuthPage.page(),
         HomePage.page(),
       ],
     );
@@ -50,7 +50,7 @@ class AppRouter extends RouterDelegate<AppLink>
 
   AppLink getCurrentPath() {
     if (!appProvider.isLoggedIn) {
-      return AppLink(location: AppLink.kSignInPath);
+      return AppLink(location: AppLink.kAuthPath);
     } else {
       return AppLink(location: AppLink.kHomePath);
     }

@@ -1,8 +1,7 @@
 class AppLink {
   // Constants for each URL path
   static const String kHomePath = '/home';
-  static const String kSignUpPath = '/signup';
-  static const String kSignInPath = '/signin';
+  static const String kAuthPath = '/auth';
   static const String kUserPath = '/user';
 
   // Constants for each query parameter
@@ -34,11 +33,8 @@ class AppLink {
         value == null ? '' : '$key=$value';
 
     switch (location) {
-      case kSignInPath:
-        return kSignInPath;
-
-      case kSignUpPath:
-        return kSignUpPath;
+      case kAuthPath:
+        return kAuthPath;
 
       case kUserPath:
         var loc = '$kUserPath?';
