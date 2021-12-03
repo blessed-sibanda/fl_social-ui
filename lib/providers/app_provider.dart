@@ -20,4 +20,11 @@ class AppProvider extends ChangeNotifier {
     _loggedIn = true;
     notifyListeners();
   }
+
+  void logOut() {
+    print('logging Out');
+    _loggedIn = false;
+
+    notifyListeners();
+  }
 }

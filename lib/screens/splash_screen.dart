@@ -25,15 +25,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueGrey,
-      child: Center(
-        child: Text(
-          'Flutter Social',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-            color: Theme.of(context).primaryColor,
+    return Scaffold(
+      body: Container(
+        color: Colors.lightGreen.shade50,
+        child: Center(
+          child: Text(
+            'Flutter Social',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
       ),
