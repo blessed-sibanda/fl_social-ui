@@ -3,28 +3,17 @@ import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
-  static get page => MaterialPage(
-        child: const SplashScreen(),
+  static get page => const MaterialPage(
+        child: SplashScreen(),
         name: AppPages.splashPath,
         key: ValueKey(AppPages.splashPath),
       );
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<AppProvider>(context, listen: false).initializeApp();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Provider.of<AppProvider>(context, listen: false).initializeApp();
     return Scaffold(
       body: Container(
         color: Colors.lightGreen.shade50,
