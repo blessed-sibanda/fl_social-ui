@@ -35,6 +35,7 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<AppProvider>(
         builder: (context, appProvider, child) {
           return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             title: 'Flutter Social',
             theme: ThemeData(
               primarySwatch: Colors.lightGreen,
