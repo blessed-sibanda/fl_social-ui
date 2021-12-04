@@ -30,8 +30,8 @@ class AppProvider extends ChangeNotifier {
     });
   }
 
-  void logIn(String userToken) async {
-    await _appCache.cacheUserToken(userToken);
+  void logIn(Map<String, dynamic> userData) async {
+    await _appCache.cacheUserData(userData);
     _loggedIn = true;
     notifyListeners();
   }

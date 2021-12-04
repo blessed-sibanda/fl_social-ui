@@ -10,7 +10,7 @@ class ServiceApiError {
 abstract class BaseApi {
   String baseUrl = 'http://192.168.43.72:3000';
 
-  Future<dynamic> jsonResponse(
+  dynamic jsonResponse(
     Response response, {
     String dataKey = '',
     String errorKey = 'error',

@@ -90,11 +90,11 @@ class _SignInFormState extends State<SignInForm> {
       _authApi
           .signIn(_emailController.text, _passwordController.text)
           .then((value) {
+        print(value);
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
-          Provider.of<AppProvider>(context, listen: false)
-              .logIn(value['token']);
+          Provider.of<AppProvider>(context, listen: false).logIn(value);
         }
       });
     }

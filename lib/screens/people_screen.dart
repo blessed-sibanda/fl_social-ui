@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
+import 'package:flutter_social/widgets/who_to_follow.dart';
 
 class PeopleScreen extends StatelessWidget {
   const PeopleScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class PeopleScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(56.0),
       ),
       body: SafeArea(
-        child: Center(child: Text('People')),
+        child: WhoToFollow(),
       ),
     );
   }
