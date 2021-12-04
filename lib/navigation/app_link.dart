@@ -33,6 +33,9 @@ class AppLink {
       case AppPages.authPath:
         return AppPages.authPath;
 
+      case AppPages.peoplePath:
+        return AppPages.peoplePath;
+
       case AppPages.userPath:
         var loc = '${AppPages.userPath}?';
         loc += addKeyValuePair(key: kUserIdParam, value: userId);

@@ -3,6 +3,7 @@ import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/navigation/app_link.dart';
 import 'package:flutter_social/screens/auth_screen.dart';
 import 'package:flutter_social/screens/home_screen.dart';
+import 'package:flutter_social/screens/people_screen.dart';
 import 'package:flutter_social/screens/splash_screen.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/screens/user_profile_screen.dart';
@@ -40,6 +41,10 @@ class AppRouter extends RouterDelegate<AppLink>
             appProvider.isLoggedIn &&
             appProvider.didSelectUser)
           UserProfileScreen.page,
+        if (appProvider.isInitialized &&
+            appProvider.isLoggedIn &&
+            appProvider.onPeople)
+          PeopleScreen.page,
       ],
     );
   }
@@ -51,6 +56,10 @@ class AppRouter extends RouterDelegate<AppLink>
       appProvider.goToHome();
     }
 
+    if (route.settings.name == AppPages.peoplePath) {
+      appProvider.goToHome();
+    }
+
     return true;
   }
 
@@ -59,6 +68,9 @@ class AppRouter extends RouterDelegate<AppLink>
     switch (configuration.location) {
       case AppPages.userPath:
         appProvider.goToProfile();
+        break;
+      case AppPages.peoplePath:
+        appProvider.goToPeople();
         break;
       case AppPages.homePath:
         appProvider.goToHome();
@@ -73,6 +85,8 @@ class AppRouter extends RouterDelegate<AppLink>
       return AppLink(location: AppPages.authPath);
     } else if (appProvider.didSelectUser) {
       return AppLink(location: AppPages.userPath);
+    } else if (appProvider.onPeople) {
+      return AppLink(location: AppPages.peoplePath);
     } else {
       return AppLink(location: AppPages.homePath);
     }

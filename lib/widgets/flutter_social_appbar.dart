@@ -87,6 +87,9 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
       case MenuItems.myProfile:
         Provider.of<AppProvider>(context, listen: false).goToProfile();
         break;
+      case MenuItems.people:
+        Provider.of<AppProvider>(context, listen: false).goToPeople();
+        break;
       default:
     }
   }
