@@ -93,7 +93,8 @@ class _SignInFormState extends State<SignInForm> {
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
-          Provider.of<AppProvider>(context, listen: false).logIn();
+          Provider.of<AppProvider>(context, listen: false)
+              .logIn(value['token']);
         }
       });
     }

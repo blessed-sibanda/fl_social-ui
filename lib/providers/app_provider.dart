@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_social/utils/app_cache.dart';
 
 class AppProvider extends ChangeNotifier {
+  final _appCache = AppCache();
+
   bool _initialized = false;
   bool _loggedIn = false;
   bool _didSelectUser = false;
@@ -20,21 +23,23 @@ class AppProvider extends ChangeNotifier {
   }
 
   void initializeApp() async {
+    _loggedIn = await _appCache.isUserLoggedIn();
     Timer(const Duration(milliseconds: 2000), () {
       _initialized = true;
       notifyListeners();
     });
   }
 
-  void logIn() {
+  void logIn(String userToken) async {
+    await _appCache.cacheUserToken(userToken);
     _loggedIn = true;
     notifyListeners();
   }
 
-  void logOut() {
-    print('logging Out');
+  void logOut() async {
     _loggedIn = false;
     _reset();
+    await _appCache.invalidate();
 
     notifyListeners();
   }
