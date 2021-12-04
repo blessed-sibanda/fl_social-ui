@@ -55,10 +55,10 @@ class AppRouter extends RouterDelegate<AppLink>
   @override
   Future<void> setNewRoutePath(AppLink configuration) async {
     switch (configuration.location) {
-      case AppLink.kUserPath:
+      case AppPages.userPath:
         appProvider.goToProfile();
         break;
-      case AppLink.kHomePath:
+      case AppPages.homePath:
         appProvider.goToHome();
         break;
       default:
@@ -68,11 +68,11 @@ class AppRouter extends RouterDelegate<AppLink>
 
   AppLink getCurrentPath() {
     if (!appProvider.isLoggedIn) {
-      return AppLink(location: AppLink.kAuthPath);
+      return AppLink(location: AppPages.authPath);
     } else if (appProvider.didSelectUser) {
-      return AppLink(location: AppLink.kUserPath);
+      return AppLink(location: AppPages.userPath);
     } else {
-      return AppLink(location: AppLink.kHomePath);
+      return AppLink(location: AppPages.homePath);
     }
   }
 

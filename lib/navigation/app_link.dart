@@ -1,9 +1,6 @@
-class AppLink {
-  // Constants for each URL path
-  static const String kHomePath = '/home';
-  static const String kAuthPath = '/auth';
-  static const String kUserPath = '/user';
+import 'package:flutter_social/models/app_pages.dart';
 
+class AppLink {
   // Constants for each query parameter
   static const String kUserIdParam = 'userId';
 
@@ -33,16 +30,16 @@ class AppLink {
         value == null ? '' : '$key=$value';
 
     switch (location) {
-      case kAuthPath:
-        return kAuthPath;
+      case AppPages.authPath:
+        return AppPages.authPath;
 
-      case kUserPath:
-        var loc = '$kUserPath?';
+      case AppPages.userPath:
+        var loc = '${AppPages.userPath}?';
         loc += addKeyValuePair(key: kUserIdParam, value: userId);
         return Uri.encodeFull(loc);
 
       default:
-        return kHomePath;
+        return AppPages.homePath;
     }
   }
 }

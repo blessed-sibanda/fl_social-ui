@@ -1,6 +1,7 @@
 class AppPages {
-  static String splashPath = '/splash';
-  static String authPath = '/auth';
-  static String homePath = '/home';
-  static String userPath = '/user';
+  static const String splashPath = '/splash';
+  static const String authPath = '/auth';
+  static const String homePath = '/home';
+  static const String userPath = '/user';
+  static const String peoplePath = '/people';
 }
