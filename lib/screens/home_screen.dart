@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/widgets/people_list.dart';
-import 'package:flutter_social/widgets/posts_feed.dart';
-import 'package:flutter_social/widgets/user_profile.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,22 +25,7 @@ class MenuItems {
   static List<String> get bigScreen => [myProfile, signOut];
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     bool isSmallScreen = false;
@@ -63,23 +45,8 @@ class _HomeScreenState extends State<HomeScreen>
           _buildDropdownMenu(isSmallScreen),
         ],
       ),
-      body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
-          children: const [PostsFeed(), PeopleList(), UserProfile()],
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: TabBar(
-          controller: _tabController,
-          labelColor: Colors.black54,
-          unselectedLabelColor: Colors.black38,
-          tabs: const [
-            Tab(icon: Icon(Icons.feed), text: 'Feed'),
-            Tab(icon: Icon(Icons.people), text: 'People'),
-            Tab(icon: Icon(Icons.person), text: 'Profile'),
-          ],
-        ),
+      body: const SafeArea(
+        child: Center(child: Text('Home')),
       ),
     );
   }
