@@ -22,9 +22,7 @@ class UsersApi extends BaseApi {
         'Authorization': 'Bearer ${currentUser.token}',
       },
     );
-    print(response.body);
-    // print(jsonResponse(response));
-    // return jsonResponse(response);
+
     return json.decode(response.body);
   }
 }
