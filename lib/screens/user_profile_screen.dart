@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
 
-  static get page => MaterialPage(
-        child: const UserProfileScreen(),
-        name: AppPages.userPath,
-        key: ValueKey(AppPages.userPath),
+  static get page => const MaterialPage(
+        child: UserProfileScreen(),
+        name: AppPaths.userPath,
+        key: ValueKey(AppPaths.userPath),
       );
 
   @override

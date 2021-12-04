@@ -1,4 +1,4 @@
-class AppPages {
+class AppPaths {
   static const String splashPath = '/splash';
   static const String authPath = '/auth';
   static const String homePath = '/home';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 
 class PeopleScreen extends StatelessWidget {
@@ -7,8 +7,8 @@ class PeopleScreen extends StatelessWidget {
 
   static get page => const MaterialPage(
         child: PeopleScreen(),
-        name: AppPages.userPath,
-        key: ValueKey(AppPages.userPath),
+        name: AppPaths.userPath,
+        key: ValueKey(AppPaths.userPath),
       );
 
   @override

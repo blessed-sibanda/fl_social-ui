@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  static get page => MaterialPage(
-        child: const HomeScreen(),
-        name: AppPages.homePath,
-        key: ValueKey(AppPages.homePath),
+  static get page => const MaterialPage(
+        child: HomeScreen(),
+        name: AppPaths.homePath,
+        key: ValueKey(AppPaths.homePath),
       );
 
   @override

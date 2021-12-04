@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/navigation/app_link.dart';
 import 'package:flutter_social/screens/auth_screen.dart';
 import 'package:flutter_social/screens/home_screen.dart';
@@ -52,11 +52,11 @@ class AppRouter extends RouterDelegate<AppLink>
   bool _handlePopPage(Route<dynamic> route, result) {
     if (!route.didPop(result)) return false;
 
-    if (route.settings.name == AppPages.userPath) {
+    if (route.settings.name == AppPaths.userPath) {
       appProvider.goToHome();
     }
 
-    if (route.settings.name == AppPages.peoplePath) {
+    if (route.settings.name == AppPaths.peoplePath) {
       appProvider.goToHome();
     }
 
@@ -66,13 +66,13 @@ class AppRouter extends RouterDelegate<AppLink>
   @override
   Future<void> setNewRoutePath(AppLink configuration) async {
     switch (configuration.location) {
-      case AppPages.userPath:
+      case AppPaths.userPath:
         appProvider.goToProfile();
         break;
-      case AppPages.peoplePath:
+      case AppPaths.peoplePath:
         appProvider.goToPeople();
         break;
-      case AppPages.homePath:
+      case AppPaths.homePath:
         appProvider.goToHome();
         break;
       default:
@@ -82,13 +82,13 @@ class AppRouter extends RouterDelegate<AppLink>
 
   AppLink getCurrentPath() {
     if (!appProvider.isLoggedIn) {
-      return AppLink(location: AppPages.authPath);
+      return AppLink(location: AppPaths.authPath);
     } else if (appProvider.didSelectUser) {
-      return AppLink(location: AppPages.userPath);
+      return AppLink(location: AppPaths.userPath);
     } else if (appProvider.onPeople) {
-      return AppLink(location: AppPages.peoplePath);
+      return AppLink(location: AppPaths.peoplePath);
     } else {
-      return AppLink(location: AppPages.homePath);
+      return AppLink(location: AppPaths.homePath);
     }
   }
 

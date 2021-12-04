@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/app_pages.dart';
+import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -7,8 +7,8 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
   static get page => const MaterialPage(
         child: SplashScreen(),
-        name: AppPages.splashPath,
-        key: ValueKey(AppPages.splashPath),
+        name: AppPaths.splashPath,
+        key: ValueKey(AppPaths.splashPath),
       );
 
   @override
