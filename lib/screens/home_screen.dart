@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   static get page => MaterialPage(
@@ -11,11 +11,6 @@ class HomeScreen extends StatefulWidget {
         key: ValueKey(AppPages.homePath),
       );
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
