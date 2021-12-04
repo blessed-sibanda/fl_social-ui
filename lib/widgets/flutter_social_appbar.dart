@@ -28,10 +28,10 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
       automaticallyImplyLeading: false,
       actions: [
         isSmallScreen
-            ? IconButton(onPressed: () {}, icon: const Icon(Icons.home))
+            ? IconButton(onPressed: _goToHomePage, icon: const Icon(Icons.home))
             : InkWell(
                 child: _buildMenuButton(icon: Icons.home, label: 'Home'),
-                onTap: () {},
+                onTap: _goToHomePage,
               ),
         _buildDropdownMenu(isSmallScreen),
       ],
@@ -84,7 +84,14 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
       case MenuItems.signOut:
         Provider.of<AppProvider>(context, listen: false).logOut();
         break;
+      case MenuItems.myProfile:
+        Provider.of<AppProvider>(context, listen: false).goToProfile();
+        break;
       default:
     }
+  }
+
+  void _goToHomePage() {
+    Provider.of<AppProvider>(context, listen: false).goToHome();
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_social/models/app_pages.dart';
 import 'package:flutter_social/navigation/app_link.dart';
 import 'package:flutter_social/screens/auth_screen.dart';
 import 'package:flutter_social/screens/home_screen.dart';
 import 'package:flutter_social/screens/splash_screen.dart';
 import 'package:flutter_social/providers/app_provider.dart';
+import 'package:flutter_social/screens/user_profile_screen.dart';
 
 class AppRouter extends RouterDelegate<AppLink>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -32,7 +34,10 @@ class AppRouter extends RouterDelegate<AppLink>
         if (!appProvider.isInitialized) SplashScreen.page,
         if (appProvider.isInitialized && !appProvider.isLoggedIn)
           AuthScreen.page,
-        if (appProvider.isLoggedIn) HomeScreen.page,
+        if (appProvider.isLoggedIn && appProvider.didSelectUser)
+          UserProfileScreen.page,
+        if (appProvider.isLoggedIn && !appProvider.didSelectUser)
+          HomeScreen.page,
       ],
     );
   }
@@ -40,17 +45,32 @@ class AppRouter extends RouterDelegate<AppLink>
   bool _handlePopPage(Route<dynamic> route, result) {
     if (!route.didPop(result)) return false;
 
+    if (route.settings.name == AppPages.userPath) {
+      appProvider.goToHome();
+    }
+
     return true;
   }
 
   @override
   Future<void> setNewRoutePath(AppLink configuration) async {
-    return;
+    switch (configuration.location) {
+      case AppLink.kUserPath:
+        appProvider.goToProfile();
+        break;
+      case AppLink.kHomePath:
+        appProvider.goToHome();
+        break;
+      default:
+        break;
+    }
   }
 
   AppLink getCurrentPath() {
     if (!appProvider.isLoggedIn) {
       return AppLink(location: AppLink.kAuthPath);
+    } else if (appProvider.didSelectUser) {
+      return AppLink(location: AppLink.kUserPath);
     } else {
       return AppLink(location: AppLink.kHomePath);
     }
