@@ -19,13 +19,15 @@ class AuthScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AuthPageProvider(),
       child: Consumer<AuthPageProvider>(
-        builder: (context, authPageProvider, child) {
+        builder: (_, authPageProvider, __) {
           return Scaffold(
             body: SafeArea(
               child: Center(
-                child: authPageProvider.onSignInPage
-                    ? const SignInForm()
-                    : const SignUpForm(),
+                child: SingleChildScrollView(
+                  child: authPageProvider.onSignInPage
+                      ? const SignInForm()
+                      : const SignUpForm(),
+                ),
               ),
             ),
           );
