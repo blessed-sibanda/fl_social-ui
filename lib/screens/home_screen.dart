@@ -54,24 +54,12 @@ class _HomeScreenState extends State<HomeScreen>
         title: const Text('Flutter Social'),
         automaticallyImplyLeading: false,
         actions: [
-          if (isSmallScreen)
-            IconButton(onPressed: () {}, icon: const Icon(Icons.home)),
-          if (!isSmallScreen)
-            InkWell(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.home),
-                      SizedBox(width: 5.0),
-                      Text('Home'),
-                    ],
-                  ),
+          isSmallScreen
+              ? IconButton(onPressed: () {}, icon: const Icon(Icons.home))
+              : InkWell(
+                  child: _buildMenuButton(icon: Icons.home, label: 'Home'),
+                  onTap: () {},
                 ),
-              ),
-              onTap: () {},
-            ),
           _buildDropdownMenu(isSmallScreen),
         ],
       ),
@@ -104,25 +92,28 @@ class _HomeScreenState extends State<HomeScreen>
             itemBuilder: (_) => _buildMenuItems(MenuItems.smallScreen),
           )
         : PopupMenuButton<String>(
-            child: InkWell(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.account_circle),
-                      SizedBox(width: 5.0),
-                      Text('Account'),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            child:
+                _buildMenuButton(icon: Icons.account_circle, label: 'Account'),
             onSelected: _performAction,
             itemBuilder: (_) => _buildMenuItems(MenuItems.bigScreen),
           );
 
     return popUpMenuButton;
+  }
+
+  Center _buildMenuButton({required IconData icon, required String label}) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: Row(
+          children: [
+            Icon(icon),
+            const SizedBox(width: 5.0),
+            Text(label),
+          ],
+        ),
+      ),
+    );
   }
 
   List<PopupMenuEntry<String>> _buildMenuItems(List<String> menuItems) {
