@@ -8,17 +8,18 @@ class ServiceApiError {
 }
 
 abstract class BaseApi {
-  // String baseUrl = 'http://192.168.43.72:3000';
-  String baseUrl = 'http://127.0.0.1:3000';
+  String baseUrl = 'http://192.168.43.72:3000';
+  // String baseUrl = 'http://127.0.0.1:3000';
 
   Future<dynamic> jsonResponse(
     Response response, {
     String dataKey = '',
     String errorKey = 'error',
   }) async {
-    var jsonResponse = json.decode(response.body);
+    final jsonResponse = json.decode(response.body);
+    List<int> successCodes = [200, 201, 204];
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (successCodes.contains(response.statusCode)) {
       if (dataKey.isNotEmpty) {
         return jsonResponse[dataKey];
       } else {
