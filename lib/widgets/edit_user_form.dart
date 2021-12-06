@@ -21,6 +21,8 @@ class _EditUserFormState extends State<EditUserForm> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _aboutController = TextEditingController();
+
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   String _error = '';
 
@@ -34,6 +36,7 @@ class _EditUserFormState extends State<EditUserForm> {
         _user = User.fromJson(userJson);
         _nameController.text = _user.name;
         _emailController.text = _user.email!;
+        // _aboutController.text = _user.about!;
       });
     });
   }
@@ -49,6 +52,7 @@ class _EditUserFormState extends State<EditUserForm> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _aboutController.dispose();
     super.dispose();
   }
 
@@ -65,9 +69,10 @@ class _EditUserFormState extends State<EditUserForm> {
             const Divider(),
             if (_error.isNotEmpty)
               Text(_error, style: const TextStyle(color: Colors.red)),
-            NameInputField(nameController: _nameController),
+            TextInputField(label: 'Name', nameController: _nameController),
+            // TextInputField(label: 'About', nameController: _aboutController),
             EmailInputField(emailController: _emailController),
-            PasswordInputField(controller: _passwordController),
+            // PasswordInputField(controller: _passwordController),
             const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -92,20 +97,26 @@ class _EditUserFormState extends State<EditUserForm> {
   }
 
   void _updateUser() {
+    print('i was clicked');
     if ((_formStateKey.currentState != null) &&
         (_formStateKey.currentState!.validate())) {
+      print('i was called');
       User user = User(
         name: _nameController.text,
         email: _emailController.text,
-        password: _passwordController.text,
+        // password: _passwordController.text,
+        // about: _aboutController.text,
       );
-      _usersApi.createUser(user).then((value) {
+      _usersApi.updateUser(user).then((value) {
+        print('Value');
+        print(value);
         if (value is ServiceApiError) {
           setState(() => _error = value.message);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User details updated successfully!')),
           );
+          Provider.of<AppProvider>(context, listen: false).goToProfile();
         }
       });
     }

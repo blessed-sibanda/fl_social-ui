@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/widgets/edit_user._form.dart';
+import 'package:flutter_social/widgets/edit_user_form.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 import 'package:provider/provider.dart';
 

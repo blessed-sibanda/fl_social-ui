@@ -13,6 +13,19 @@ class UsersApi extends BaseApi {
     return jsonResponse(response, dataKey: 'message');
   }
 
+  Future<dynamic> updateUser(User user) async {
+    User currentUser = await AppCache().currentUser();
+    var response = await http.put(
+      Uri.parse('$baseUrl/api/users/${currentUser.id}'),
+      body: user.toJson(),
+      headers: {
+        'Authorization': 'Bearer ${currentUser.token}',
+      },
+    );
+    print(response.body);
+    return jsonResponse(response);
+  }
+
   Future<List<dynamic>> findUsers() async {
     User currentUser = await AppCache().currentUser();
 

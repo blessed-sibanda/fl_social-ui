@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/utils/form_validators.dart';
 
-class NameInputField extends StatelessWidget {
-  const NameInputField({
+class TextInputField extends StatelessWidget {
+  final String label;
+  const TextInputField({
     Key? key,
+    required this.label,
     required TextEditingController nameController,
   })  : _nameController = nameController,
         super(key: key);
@@ -16,8 +18,8 @@ class NameInputField extends StatelessWidget {
       controller: _nameController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
-      keyboardType: TextInputType.name,
-      decoration: const InputDecoration(labelText: 'Name'),
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(labelText: label),
       validator: (value) => FormValidators.userNameField(value),
     );
   }

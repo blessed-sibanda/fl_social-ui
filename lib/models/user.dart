@@ -9,6 +9,7 @@ class User {
   String? token;
   List<User>? followers;
   List<User>? following;
+  String? about;
 
   User({
     this.id,
@@ -19,6 +20,7 @@ class User {
     this.token,
     this.followers,
     this.following,
+    this.about,
   }) {
     followers ??= [];
     following ??= [];
@@ -42,6 +44,7 @@ class User {
       name: json['name'],
       email: json['email'] as String?,
       password: json['password'] as String?,
+      about: json['about'] as String?,
       createdAt:
           json.containsKey('created') ? DateTime.parse(json['created']) : null,
       followers: followers,
@@ -53,7 +56,8 @@ class User {
     var userMap = {
       'name': name,
       'email': email,
-      'password': password,
+      // 'password': password,
+      // 'about': about,
     };
     if (id != null) userMap['id'] = id;
     return userMap;

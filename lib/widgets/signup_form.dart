@@ -52,7 +52,7 @@ class _SignUpFormState extends State<SignUpForm> {
             const Divider(),
             if (_error.isNotEmpty)
               Text(_error, style: const TextStyle(color: Colors.red)),
-            NameInputField(nameController: _nameController),
+            TextInputField(label: 'Name', nameController: _nameController),
             EmailInputField(emailController: _emailController),
             PasswordInputField(controller: _passwordController),
             const SizedBox(height: 20.0),
