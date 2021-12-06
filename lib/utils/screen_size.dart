@@ -19,4 +19,11 @@ class ScreenSize {
 
   static bool isLarge(BuildContext context) =>
       _getSize(context) == ScreenSizes.large;
+
+  static EdgeInsets minPadding(BuildContext context) {
+    return EdgeInsets.symmetric(
+      vertical: isLarge(context) ? 20.0 : 0.0,
+      horizontal: isLarge(context) ? 30.0 : 0.0,
+    );
+  }
 }

@@ -21,20 +21,27 @@ class HomeScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(56.0),
       ),
       body: SafeArea(
-        child: Row(
-          children: [
-            const Expanded(
-              child: Text('Post Feed'),
-              flex: 2,
-            ),
-            if (!ScreenSize.isMedium(context))
+        child: Padding(
+          padding: ScreenSize.minPadding(context),
+          child: Row(
+            children: [
               const Expanded(
-                flex: 1,
-                child: Card(
-                  child: WhoToFollow(),
-                ),
-              )
-          ],
+                child: Text('Post Feed'),
+                flex: 2,
+              ),
+              if (ScreenSize.isLarge(context))
+                Expanded(
+                  flex: 1,
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                          ScreenSize.isLarge(context) ? 10.0 : 0.0),
+                      child: const WhoToFollow(),
+                    ),
+                  ),
+                )
+            ],
+          ),
         ),
       ),
     );
