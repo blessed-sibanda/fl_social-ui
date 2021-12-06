@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social/utils/screen_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 
@@ -21,19 +22,17 @@ class FlutterSocialAppBar extends StatefulWidget {
 class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
   @override
   Widget build(BuildContext context) {
-    bool isSmallScreen = false;
-    if (MediaQuery.of(context).size.width < 600) isSmallScreen = true;
     return AppBar(
       title: const Text('Flutter Social'),
       automaticallyImplyLeading: false,
       actions: [
-        isSmallScreen
+        ScreenSize.isSmall(context)
             ? IconButton(onPressed: _goToHomePage, icon: const Icon(Icons.home))
             : InkWell(
                 child: _buildMenuButton(icon: Icons.home, label: 'Home'),
                 onTap: _goToHomePage,
               ),
-        _buildDropdownMenu(isSmallScreen),
+        _buildDropdownMenu(ScreenSize.isSmall(context)),
       ],
     );
   }

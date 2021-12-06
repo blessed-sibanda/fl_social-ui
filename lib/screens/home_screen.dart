@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
+import 'package:flutter_social/utils/screen_size.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
 import 'package:flutter_social/widgets/who_to_follow.dart';
 
@@ -14,8 +15,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSmallScreen = false;
-    if (MediaQuery.of(context).size.width < 600) isSmallScreen = true;
     return Scaffold(
       appBar: const PreferredSize(
         child: FlutterSocialAppBar(),
@@ -28,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               child: Text('Post Feed'),
               flex: 2,
             ),
-            if (!isSmallScreen)
+            if (!ScreenSize.isMedium(context))
               const Expanded(
                 flex: 1,
                 child: Card(
