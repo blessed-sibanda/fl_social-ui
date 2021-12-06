@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class User {
   String? id;
   String name;
@@ -55,5 +57,13 @@ class User {
     };
     if (id != null) userMap['id'] = id;
     return userMap;
+  }
+
+  String get joinedAt {
+    if (createdAt != null) {
+      DateTime localCreated = createdAt!.toLocal();
+      return '${DateFormat.yMMMd().format(localCreated)} - ${DateFormat.Hm().format(localCreated)}';
+    }
+    return '';
   }
 }

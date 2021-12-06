@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/navigation/app_link.dart';
 import 'package:flutter_social/screens/auth_screen.dart';
+import 'package:flutter_social/screens/edit_user_screen.dart';
 import 'package:flutter_social/screens/home_screen.dart';
 import 'package:flutter_social/screens/people_screen.dart';
 import 'package:flutter_social/screens/splash_screen.dart';
@@ -39,8 +40,13 @@ class AppRouter extends RouterDelegate<AppLink>
           HomeScreen.page,
         if (appProvider.isInitialized &&
             appProvider.isLoggedIn &&
-            appProvider.didSelectUser)
+            appProvider.didSelectUser &&
+            !appProvider.editingUser)
           UserProfileScreen.page,
+        if (appProvider.isInitialized &&
+            appProvider.isLoggedIn &&
+            appProvider.editingUser)
+          EditUserScreen.page,
         if (appProvider.isInitialized &&
             appProvider.isLoggedIn &&
             appProvider.onPeople)
@@ -73,6 +79,9 @@ class AppRouter extends RouterDelegate<AppLink>
           appProvider.goToProfile(userId: configuration.userId!);
         }
         break;
+      case AppPaths.userEditPath:
+        appProvider.editUser();
+        break;
       case AppPaths.peoplePath:
         appProvider.goToPeople();
         break;
@@ -94,6 +103,8 @@ class AppRouter extends RouterDelegate<AppLink>
       );
     } else if (appProvider.onPeople) {
       return AppLink(location: AppPaths.peoplePath);
+    } else if (appProvider.editingUser) {
+      return AppLink(location: AppPaths.userEditPath);
     } else {
       return AppLink(location: AppPaths.homePath);
     }

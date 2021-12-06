@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/models/user.dart';
+import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/services/users_api.dart';
 import 'package:flutter_social/utils/app_cache.dart';
+import 'package:flutter_social/widgets/edit_user._form.dart';
 import 'package:flutter_social/widgets/follow_button.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class UserInfo extends StatefulWidget {
   final String userId;
@@ -24,7 +26,7 @@ class _UserInfoState extends State<UserInfo> {
   late User _user;
   bool _isFollowing = false;
 
-  void _loadData() async {
+  void _loadData() {
     _usersApi.getUser(widget.userId).then((userJson) {
       AppCache().currentUser().then((currentUser) {
         for (var u in _user.followers!) {
@@ -35,8 +37,6 @@ class _UserInfoState extends State<UserInfo> {
       });
 
       setState(() {
-        print('userJson');
-        print(userJson);
         _user = User.fromJson(userJson);
         _userAvatarUrl = _usersApi.userAvatarUrl(_user.id!);
         _loading = false;
@@ -79,12 +79,23 @@ class _UserInfoState extends State<UserInfo> {
                   children: [
                     if (widget.userId == '')
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<AppProvider>(context, listen: false)
+                              .editUser();
+                        },
                         icon: const Icon(Icons.edit),
                       ),
                     if (widget.userId == '')
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) {
+                              return _buildConfirmDeleteDialog(context);
+                            },
+                          );
+                        },
                         icon: const Icon(Icons.delete),
                       ),
                     if (widget.userId != '')
@@ -101,7 +112,7 @@ class _UserInfoState extends State<UserInfo> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Joined: ${DateFormat.yMMMd().format(_user.createdAt!)} - ${DateFormat.Hm().format(_user.createdAt!.toLocal())} ',
+                  'Joined: ${_user.joinedAt}',
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -109,4 +120,45 @@ class _UserInfoState extends State<UserInfo> {
           );
     return ui;
   }
+}
+
+Widget _buildConfirmDeleteDialog(BuildContext context) {
+  return AlertDialog(
+    title: const Text('Delete Account'),
+    content: const Text('Are you sure?'),
+    actions: [
+      MaterialButton(
+        elevation: 1.0,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.close, size: 20.0),
+            SizedBox(width: 10.0),
+            Text('No'),
+          ],
+        ),
+        color: Theme.of(context).primaryColor,
+        textColor: Colors.white,
+      ),
+      MaterialButton(
+        elevation: 1.0,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.check, size: 20.0),
+            SizedBox(width: 10.0),
+            Text('Yes'),
+          ],
+        ),
+        color: Colors.red,
+        textColor: Colors.white,
+      ),
+    ],
+  );
 }

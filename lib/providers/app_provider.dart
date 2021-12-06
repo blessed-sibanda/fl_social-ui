@@ -11,10 +11,12 @@ class AppProvider extends ChangeNotifier {
   bool _didSelectUser = false;
   bool _onPeople = false;
   String _selectedUser = '';
+  bool _editingUser = false;
 
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
   String get selectedUser => _selectedUser;
+  bool get editingUser => _editingUser;
 
   bool get didSelectUser => _didSelectUser;
   bool get onPeople => _onPeople;
@@ -22,6 +24,7 @@ class AppProvider extends ChangeNotifier {
   void _reset() {
     _didSelectUser = false;
     _onPeople = false;
+    _editingUser = false;
   }
 
   void initializeApp() async {
@@ -61,6 +64,12 @@ class AppProvider extends ChangeNotifier {
   void goToPeople() {
     _reset();
     _onPeople = true;
+    notifyListeners();
+  }
+
+  void editUser() {
+    _reset();
+    _editingUser = true;
     notifyListeners();
   }
 }

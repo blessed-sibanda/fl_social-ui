@@ -4,6 +4,7 @@ import 'package:flutter_social/providers/auth_page_provider.dart';
 import 'package:flutter_social/services/auth_api.dart';
 import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/widgets/email_input_field.dart';
+import 'package:flutter_social/widgets/form_wrapper.dart';
 import 'package:flutter_social/widgets/password_input_field.dart';
 import 'package:provider/provider.dart';
 
@@ -40,46 +41,36 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formStateKey,
-      child: SizedBox(
-        width: 450.0,
-        child: Card(
-          margin: const EdgeInsets.all(10.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 30.0,
-              vertical: 20.0,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      child: FormWrapper(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Sign In'.toUpperCase(),
+                style: Theme.of(context).textTheme.headline4),
+            const Divider(),
+            if (_error.isNotEmpty)
+              Text(_error, style: const TextStyle(color: Colors.red)),
+            EmailInputField(emailController: _emailController),
+            PasswordInputField(controller: _passwordController),
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Sign In'.toUpperCase(),
-                    style: Theme.of(context).textTheme.headline4),
-                const Divider(),
-                if (_error.isNotEmpty)
-                  Text(_error, style: const TextStyle(color: Colors.red)),
-                EmailInputField(emailController: _emailController),
-                PasswordInputField(controller: _passwordController),
-                const SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      child: const Text('Sign-up instead'),
-                      onPressed: () {
-                        Provider.of<AuthPageProvider>(context, listen: false)
-                            .goToSignUp();
-                      },
-                    ),
-                    const SizedBox(width: 20.0),
-                    ElevatedButton(
-                      child: const Text('Sign In'),
-                      onPressed: _signIn,
-                    ),
-                  ],
+                TextButton(
+                  child: const Text('Sign-up instead'),
+                  onPressed: () {
+                    Provider.of<AuthPageProvider>(context, listen: false)
+                        .goToSignUp();
+                  },
+                ),
+                const SizedBox(width: 20.0),
+                ElevatedButton(
+                  child: const Text('Sign In'),
+                  onPressed: _signIn,
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
