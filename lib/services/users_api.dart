@@ -25,4 +25,24 @@ class UsersApi extends BaseApi {
 
     return json.decode(response.body);
   }
+
+  String userAvatarUrl(String userId) {
+    return '$baseUrl/api/users/photo/$userId';
+  }
+
+  Future<dynamic> followUser(String followId) async {
+    User currentUser = await AppCache().currentUser();
+
+    var response = await http.put(
+      Uri.parse('$baseUrl/api/users/follow'),
+      headers: {
+        'Authorization': 'Bearer ${currentUser.token}',
+      },
+      body: {
+        'userId': currentUser.id,
+        'followId': followId,
+      },
+    );
+    return jsonResponse(response);
+  }
 }
