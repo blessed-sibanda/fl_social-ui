@@ -67,7 +67,11 @@ class AppRouter extends RouterDelegate<AppLink>
   Future<void> setNewRoutePath(AppLink configuration) async {
     switch (configuration.location) {
       case AppPaths.userPath:
-        appProvider.goToProfile();
+        if (configuration.userId != null) {
+          appProvider.goToProfile();
+        } else {
+          appProvider.goToProfile(userId: configuration.userId!);
+        }
         break;
       case AppPaths.peoplePath:
         appProvider.goToPeople();
@@ -84,7 +88,10 @@ class AppRouter extends RouterDelegate<AppLink>
     if (!appProvider.isLoggedIn) {
       return AppLink(location: AppPaths.authPath);
     } else if (appProvider.didSelectUser) {
-      return AppLink(location: AppPaths.userPath);
+      return AppLink(
+        location: AppPaths.userPath,
+        userId: appProvider.selectedUser,
+      );
     } else if (appProvider.onPeople) {
       return AppLink(location: AppPaths.peoplePath);
     } else {

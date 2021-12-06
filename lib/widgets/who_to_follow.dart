@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/models/user.dart';
+import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/services/users_api.dart';
+import 'package:provider/provider.dart';
 
 class WhoToFollow extends StatefulWidget {
   const WhoToFollow({Key? key}) : super(key: key);
@@ -70,7 +72,9 @@ class _WhoToFollowState extends State<WhoToFollow> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              Provider.of<AppProvider>(context, listen: false)
+                                  .goToProfile(userId: user.id!),
                           icon: const Icon(Icons.visibility),
                         ),
                         ElevatedButton(

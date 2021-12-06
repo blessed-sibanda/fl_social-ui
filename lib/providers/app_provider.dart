@@ -10,9 +10,11 @@ class AppProvider extends ChangeNotifier {
   bool _loggedIn = false;
   bool _didSelectUser = false;
   bool _onPeople = false;
+  String _selectedUser = '';
 
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
+  String get selectedUser => _selectedUser;
 
   bool get didSelectUser => _didSelectUser;
   bool get onPeople => _onPeople;
@@ -49,9 +51,10 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goToProfile() {
+  void goToProfile({String userId = ''}) {
     _reset();
     _didSelectUser = true;
+    _selectedUser = userId;
     notifyListeners();
   }
 
