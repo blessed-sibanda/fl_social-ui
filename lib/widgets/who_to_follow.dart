@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_social/models/user.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/services/users_api.dart';
+import 'package:flutter_social/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
 class WhoToFollow extends StatefulWidget {
@@ -15,31 +16,33 @@ class _WhoToFollowState extends State<WhoToFollow> {
   List<User> _usersToFollow = [];
   bool _loading = true;
   final _usersApi = UsersApi();
-  final Map<String, String> _usersAvatarUrls = {};
+  Map<String, String> _usersAvatarUrls = {};
 
-  List<User> loadData() {
-    List<User> usersList = [];
-
+  void loadData() {
     _usersApi.findUsers().then((data) {
+      List<User> usersList = [];
+      Map<String, String> avatars = {};
       usersList = data.map((u) {
         var user = User.fromJson(u);
-        setState(() {
-          _usersAvatarUrls[user.id!] = _usersApi.userAvatarUrl(user.id!);
-        });
+        avatars[user.id!] = _usersApi.userAvatarUrl(user.id!);
         return user;
       }).toList();
       setState(() {
         _usersToFollow = usersList;
+        _usersAvatarUrls = avatars;
         _loading = false;
       });
     });
+  }
 
-    return usersList;
+  @override
+  void initState() {
+    super.initState();
+    loadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    loadData();
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Column(
@@ -61,40 +64,32 @@ class _WhoToFollowState extends State<WhoToFollow> {
                 itemBuilder: (BuildContext context, int index) {
                   User user = _usersToFollow[index];
                   final avatarUrl = _usersAvatarUrls[user.id!];
-                  return ListTile(
-                    title: Text(user.name),
-                    leading: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(avatarUrl ?? ''),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () =>
-                              Provider.of<AppProvider>(context, listen: false)
-                                  .goToProfile(userId: user.id!),
-                          icon: const Icon(Icons.visibility),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await _usersApi.followUser(user.id!);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text('You are now following ${user.name}'),
-                              ),
-                            );
-                          },
-                          child: const Text('Follow'),
-                        ),
-                      ],
-                    ),
-                  );
+                  return _buildUserTile(context, user, avatarUrl!);
                 },
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  ListTile _buildUserTile(BuildContext context, User user, String avatarUrl) {
+    return ListTile(
+      title: Text(user.name),
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundImage: NetworkImage(avatarUrl),
+        backgroundColor: Colors.transparent,
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () => Provider.of<AppProvider>(context, listen: false)
+                .goToProfile(userId: user.id!),
+            icon: const Icon(Icons.visibility),
+          ),
+          FollowButton(followed: user, afterFollowCallback: loadData),
         ],
       ),
     );

@@ -45,4 +45,33 @@ class UsersApi extends BaseApi {
     );
     return jsonResponse(response);
   }
+
+  Future<dynamic> unfollowUser(String unfollowId) async {
+    User currentUser = await AppCache().currentUser();
+
+    var response = await http.put(
+      Uri.parse('$baseUrl/api/users/unfollow'),
+      headers: {
+        'Authorization': 'Bearer ${currentUser.token}',
+      },
+      body: {
+        'userId': currentUser.id,
+        'unfollowId': unfollowId,
+      },
+    );
+    return jsonResponse(response);
+  }
+
+  Future<dynamic> getUser(String userId) async {
+    User currentUser = await AppCache().currentUser();
+
+    var response = await http.get(
+      Uri.parse(
+          '$baseUrl/api/users/${userId.isEmpty ? currentUser.id! : userId}'),
+      headers: {
+        'Authorization': 'Bearer ${currentUser.token}',
+      },
+    );
+    return jsonResponse(response);
+  }
 }
