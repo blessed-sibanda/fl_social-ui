@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
+import 'package:flutter_social/widgets/who_to_follow.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,13 +14,29 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    bool isSmallScreen = false;
+    if (MediaQuery.of(context).size.width < 600) isSmallScreen = true;
+    return Scaffold(
+      appBar: const PreferredSize(
         child: FlutterSocialAppBar(),
         preferredSize: Size.fromHeight(56.0),
       ),
       body: SafeArea(
-        child: Center(child: Text('Home')),
+        child: Row(
+          children: [
+            const Expanded(
+              child: Text('Post Feed'),
+              flex: 2,
+            ),
+            if (!isSmallScreen)
+              const Expanded(
+                flex: 1,
+                child: Card(
+                  child: WhoToFollow(),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

@@ -48,7 +48,13 @@ class _WhoToFollowState extends State<WhoToFollow> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Who To Follow', style: Theme.of(context).textTheme.headline5),
+          Text(
+            'Who To Follow',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: Theme.of(context).textTheme.headline6!.fontSize,
+            ),
+          ),
           const SizedBox(height: 15.0),
           if (_loading)
             const Expanded(
@@ -64,7 +70,10 @@ class _WhoToFollowState extends State<WhoToFollow> {
                 itemBuilder: (BuildContext context, int index) {
                   User user = _usersToFollow[index];
                   final avatarUrl = _usersAvatarUrls[user.id!];
-                  return _buildUserTile(context, user, avatarUrl!);
+                  return InkWell(
+                    child: _buildUserTile(context, user, avatarUrl!),
+                    onTap: () => _goToUserProfile(user),
+                  );
                 },
               ),
             ),
@@ -73,24 +82,22 @@ class _WhoToFollowState extends State<WhoToFollow> {
     );
   }
 
-  ListTile _buildUserTile(BuildContext context, User user, String avatarUrl) {
-    return ListTile(
-      title: Text(user.name),
-      leading: CircleAvatar(
-        radius: 25,
-        backgroundImage: NetworkImage(avatarUrl),
-        backgroundColor: Colors.transparent,
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: () => Provider.of<AppProvider>(context, listen: false)
-                .goToProfile(userId: user.id!),
-            icon: const Icon(Icons.visibility),
-          ),
-          FollowButton(followed: user, afterFollowCallback: loadData),
-        ],
+  void _goToUserProfile(User user) =>
+      Provider.of<AppProvider>(context, listen: false)
+          .goToProfile(userId: user.id!);
+
+  Widget _buildUserTile(BuildContext context, User user, String avatarUrl) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ListTile(
+        mouseCursor: SystemMouseCursors.click,
+        title: Text(user.name),
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundImage: NetworkImage(avatarUrl),
+          backgroundColor: Colors.transparent,
+        ),
+        trailing: FollowButton(followed: user, afterFollowCallback: loadData),
       ),
     );
   }
