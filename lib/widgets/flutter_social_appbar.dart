@@ -32,13 +32,13 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
                 child: _buildMenuButton(icon: Icons.home, label: 'Home'),
                 onTap: _goToHomePage,
               ),
-        _buildDropdownMenu(ScreenSize.isSmall(context)),
+        _buildDropdownMenu(),
       ],
     );
   }
 
-  PopupMenuButton<String> _buildDropdownMenu(bool isSmallScreen) {
-    var popUpMenuButton = isSmallScreen
+  PopupMenuButton<String> _buildDropdownMenu() {
+    var popUpMenuButton = ScreenSize.isSmall(context)
         ? PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
             onSelected: _performAction,
@@ -48,7 +48,11 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
             child:
                 _buildMenuButton(icon: Icons.account_circle, label: 'Account'),
             onSelected: _performAction,
-            itemBuilder: (_) => _buildMenuItems(MenuItems.bigScreen),
+            itemBuilder: (_) => _buildMenuItems(
+              ScreenSize.isLarge(context)
+                  ? MenuItems.bigScreen
+                  : MenuItems.smallScreen,
+            ),
           );
 
     return popUpMenuButton;

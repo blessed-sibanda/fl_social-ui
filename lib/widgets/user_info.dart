@@ -3,6 +3,7 @@ import 'package:flutter_social/models/user.dart';
 import 'package:flutter_social/services/users_api.dart';
 import 'package:flutter_social/utils/app_cache.dart';
 import 'package:flutter_social/widgets/follow_button.dart';
+import 'package:intl/intl.dart';
 
 class UserInfo extends StatefulWidget {
   final String userId;
@@ -34,6 +35,8 @@ class _UserInfoState extends State<UserInfo> {
       });
 
       setState(() {
+        print('userJson');
+        print(userJson);
         _user = User.fromJson(userJson);
         _userAvatarUrl = _usersApi.userAvatarUrl(_user.id!);
         _loading = false;
@@ -59,37 +62,50 @@ class _UserInfoState extends State<UserInfo> {
               ],
             ),
           )
-        : ListTile(
-            title: Text(_user.name),
-            subtitle: Text(_user.email!),
-            leading: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(_userAvatarUrl),
-              foregroundColor: Colors.grey.shade200,
-              backgroundColor: Colors.transparent,
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.userId == '')
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit),
-                  ),
-                if (widget.userId == '')
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.delete),
-                  ),
-                if (widget.userId != '')
-                  FollowButton(
-                    followed: _user,
-                    afterFollowCallback: () =>
-                        setState(() => _isFollowing = !_isFollowing),
-                    isFollowing: _isFollowing,
-                  ),
-              ],
-            ),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                title: Text(_user.name),
+                subtitle: Text(_user.email!),
+                leading: CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(_userAvatarUrl),
+                  foregroundColor: Colors.grey.shade200,
+                  backgroundColor: Colors.transparent,
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.userId == '')
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.edit),
+                      ),
+                    if (widget.userId == '')
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.delete),
+                      ),
+                    if (widget.userId != '')
+                      FollowButton(
+                        followed: _user,
+                        afterFollowCallback: () =>
+                            setState(() => _isFollowing = !_isFollowing),
+                        isFollowing: _isFollowing,
+                      ),
+                  ],
+                ),
+              ),
+              const Divider(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Joined: ${DateFormat.yMMMd().format(_user.createdAt!)} - ${DateFormat.Hm().format(_user.createdAt!.toLocal())} ',
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ],
           );
     return ui;
   }

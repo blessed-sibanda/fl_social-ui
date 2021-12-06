@@ -4,7 +4,6 @@ class User {
   String? email;
   String? password;
   DateTime? createdAt;
-  DateTime? updatedAt;
   String? token;
   List<User>? followers;
   List<User>? following;
@@ -15,7 +14,6 @@ class User {
     required this.email,
     this.password,
     this.createdAt,
-    this.updatedAt,
     this.token,
     this.followers,
     this.following,
@@ -42,8 +40,8 @@ class User {
       name: json['name'],
       email: json['email'] as String?,
       password: json['password'] as String?,
-      createdAt: json['createdAt'] as DateTime?,
-      updatedAt: json['updatedAt'] as DateTime?,
+      createdAt:
+          json.containsKey('created') ? DateTime.parse(json['created']) : null,
       followers: followers,
       following: following,
     );
