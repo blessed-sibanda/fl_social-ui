@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: [
               const Expanded(
-                child: Text('Post Feed'),
+                child: Text('Posts'),
                 flex: 2,
               ),
               if (ScreenSize.isLarge(context))
