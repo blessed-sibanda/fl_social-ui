@@ -19,9 +19,10 @@ class FormValidators {
     return null;
   }
 
-  static String? userPasswordField(String? value) {
+  static String? userPasswordField(String? value, {bool allowBlank = false}) {
     if (value == null) return null;
     if (value.isEmpty) {
+      if (allowBlank) return null;
       return 'Password is required';
     } else if (value.length < 6) {
       return 'Password should be at least 6 characters long';

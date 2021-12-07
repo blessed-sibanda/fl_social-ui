@@ -3,10 +3,12 @@ import 'package:flutter_social/utils/form_validators.dart';
 
 class PasswordInputField extends StatefulWidget {
   final TextEditingController controller;
+  final bool onEdit;
 
   const PasswordInputField({
     Key? key,
     required this.controller,
+    this.onEdit = false,
   }) : super(key: key);
 
   @override
@@ -36,8 +38,15 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
             color: Colors.black45,
           ),
         ),
+        helperText: widget.onEdit
+            ? 'Leave this field blank if you do not want to change your password'
+            : null,
+        helperMaxLines: 2,
       ),
-      validator: (value) => FormValidators.userPasswordField(value),
+      validator: (value) => FormValidators.userPasswordField(
+        value,
+        allowBlank: widget.onEdit,
+      ),
     );
   }
 }

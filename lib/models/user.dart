@@ -56,9 +56,9 @@ class User {
     var userMap = {
       'name': name,
       'email': email,
-      // 'password': password,
-      // 'about': about,
+      'about': about,
     };
+    if (password != null) userMap['password'] = password;
     if (id != null) userMap['id'] = id;
     return userMap;
   }

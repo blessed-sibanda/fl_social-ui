@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social/providers/app_provider.dart';
 import 'package:flutter_social/utils/screen_size.dart';
+import 'package:flutter_social/utils/text_utils.dart';
 import 'package:flutter_social/widgets/user_info.dart';
 import 'package:flutter_social/navigation/app_paths.dart';
 import 'package:flutter_social/widgets/flutter_social_appbar.dart';
@@ -36,18 +37,7 @@ class UserProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 15.0, 0, 0),
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline6!.fontSize,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
+                      TextUtils.cardHeaderText(context, 'Profile'),
                       const SizedBox(height: 15.0),
                       UserInfo(userId: selectedUser),
                       const SizedBox(height: 15.0),

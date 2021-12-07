@@ -5,7 +5,7 @@ import 'package:flutter_social/services/users_api.dart';
 import 'package:flutter_social/services/base_api.dart';
 import 'package:flutter_social/widgets/email_input_field.dart';
 import 'package:flutter_social/widgets/form_wrapper.dart';
-import 'package:flutter_social/widgets/name_input_field.dart';
+import 'package:flutter_social/widgets/text_input_field.dart';
 import 'package:flutter_social/widgets/password_input_field.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +52,7 @@ class _SignUpFormState extends State<SignUpForm> {
             const Divider(),
             if (_error.isNotEmpty)
               Text(_error, style: const TextStyle(color: Colors.red)),
-            TextInputField(label: 'Name', nameController: _nameController),
+            TextInputField(label: 'Name', controller: _nameController),
             EmailInputField(emailController: _emailController),
             PasswordInputField(controller: _passwordController),
             const SizedBox(height: 20.0),
