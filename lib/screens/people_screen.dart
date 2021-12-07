@@ -16,7 +16,7 @@ class PeopleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: PreferredSize(
-        child: FlutterSocialAppBar(),
+        child: FlSocialAppBar(),
         preferredSize: Size.fromHeight(56.0),
       ),
       body: SafeArea(

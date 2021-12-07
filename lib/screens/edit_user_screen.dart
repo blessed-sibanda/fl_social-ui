@@ -20,7 +20,7 @@ class EditUserScreen extends StatelessWidget {
         Provider.of<AppProvider>(context, listen: false).selectedUser;
     return Scaffold(
       appBar: const PreferredSize(
-        child: FlutterSocialAppBar(),
+        child: FlSocialAppBar(),
         preferredSize: Size.fromHeight(56.0),
       ),
       body: EditUserForm(userId: selectedUser),

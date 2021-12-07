@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const PreferredSize(
-        child: FlutterSocialAppBar(),
+        child: FlSocialAppBar(),
         preferredSize: Size.fromHeight(56.0),
       ),
       body: SafeArea(

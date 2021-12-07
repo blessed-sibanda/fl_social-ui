@@ -12,14 +12,14 @@ class MenuItems {
   static List<String> get bigScreen => [myProfile, signOut];
 }
 
-class FlutterSocialAppBar extends StatefulWidget {
-  const FlutterSocialAppBar({Key? key}) : super(key: key);
+class FlSocialAppBar extends StatefulWidget {
+  const FlSocialAppBar({Key? key}) : super(key: key);
 
   @override
-  State<FlutterSocialAppBar> createState() => _FlutterSocialAppBarState();
+  State<FlSocialAppBar> createState() => _FlSocialAppBarState();
 }
 
-class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
+class _FlSocialAppBarState extends State<FlSocialAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(

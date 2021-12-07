@@ -24,7 +24,7 @@ class UserProfileScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: const PreferredSize(
-          child: FlutterSocialAppBar(),
+          child: FlSocialAppBar(),
           preferredSize: Size.fromHeight(56.0),
         ),
         body: SafeArea(
