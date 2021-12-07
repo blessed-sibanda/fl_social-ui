@@ -1,4 +1,4 @@
-import 'package:flutter_social/navigation/app_paths.dart';
+import 'package:fl_social/navigation/app_paths.dart';
 
 class AppLink {
   // Constants for each query parameter

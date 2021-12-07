@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_social/navigation/app_paths.dart';
-import 'package:flutter_social/navigation/app_link.dart';
-import 'package:flutter_social/screens/auth_screen.dart';
-import 'package:flutter_social/screens/edit_user_screen.dart';
-import 'package:flutter_social/screens/home_screen.dart';
-import 'package:flutter_social/screens/people_screen.dart';
-import 'package:flutter_social/screens/splash_screen.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/screens/user_profile_screen.dart';
+import 'package:fl_social/navigation/app_paths.dart';
+import 'package:fl_social/navigation/app_link.dart';
+import 'package:fl_social/screens/auth_screen.dart';
+import 'package:fl_social/screens/edit_user_screen.dart';
+import 'package:fl_social/screens/home_screen.dart';
+import 'package:fl_social/screens/people_screen.dart';
+import 'package:fl_social/screens/splash_screen.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/screens/user_profile_screen.dart';
 
 class AppRouter extends RouterDelegate<AppLink>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/navigation/app_paths.dart';
-import 'package:flutter_social/providers/app_provider.dart';
+import 'package:fl_social/navigation/app_paths.dart';
+import 'package:fl_social/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Flutter Social',
+                'Fl-Social',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: Theme.of(context).textTheme.headline2!.fontSize,

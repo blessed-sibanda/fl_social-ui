@@ -1,4 +1,4 @@
-# flutter_social
+# fl_social
 
 A new Flutter project.
 

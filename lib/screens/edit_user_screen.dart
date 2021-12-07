@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/navigation/app_paths.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/widgets/edit_user_form.dart';
-import 'package:flutter_social/widgets/flutter_social_appbar.dart';
+import 'package:fl_social/navigation/app_paths.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/widgets/edit_user_form.dart';
+import 'package:fl_social/widgets/fl_social_appbar.dart';
 import 'package:provider/provider.dart';
 
 class EditUserScreen extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_social/utils/app_cache.dart';
+import 'package:fl_social/utils/app_cache.dart';
 
 class AppProvider extends ChangeNotifier {
   final _appCache = AppCache();

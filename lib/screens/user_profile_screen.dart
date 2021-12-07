@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/utils/screen_size.dart';
-import 'package:flutter_social/utils/text_utils.dart';
-import 'package:flutter_social/widgets/user_info.dart';
-import 'package:flutter_social/navigation/app_paths.dart';
-import 'package:flutter_social/widgets/flutter_social_appbar.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/utils/screen_size.dart';
+import 'package:fl_social/utils/text_utils.dart';
+import 'package:fl_social/widgets/user_info.dart';
+import 'package:fl_social/navigation/app_paths.dart';
+import 'package:fl_social/widgets/fl_social_appbar.dart';
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {

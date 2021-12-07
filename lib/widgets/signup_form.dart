@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/providers/auth_page_provider.dart';
-import 'package:flutter_social/services/users_api.dart';
-import 'package:flutter_social/services/base_api.dart';
-import 'package:flutter_social/widgets/email_input_field.dart';
-import 'package:flutter_social/widgets/form_wrapper.dart';
-import 'package:flutter_social/widgets/text_input_field.dart';
-import 'package:flutter_social/widgets/password_input_field.dart';
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/providers/auth_page_provider.dart';
+import 'package:fl_social/services/users_api.dart';
+import 'package:fl_social/services/base_api.dart';
+import 'package:fl_social/widgets/email_input_field.dart';
+import 'package:fl_social/widgets/form_wrapper.dart';
+import 'package:fl_social/widgets/text_input_field.dart';
+import 'package:fl_social/widgets/password_input_field.dart';
 import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {

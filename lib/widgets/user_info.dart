@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/services/users_api.dart';
-import 'package:flutter_social/utils/app_cache.dart';
-import 'package:flutter_social/widgets/follow_button.dart';
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/services/users_api.dart';
+import 'package:fl_social/utils/app_cache.dart';
+import 'package:fl_social/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
 class UserInfo extends StatefulWidget {
@@ -61,63 +61,66 @@ class _UserInfoState extends State<UserInfo> {
               ],
             ),
           )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                title: Text(_user.name),
-                subtitle: Text(_user.email!),
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(_userAvatarUrl),
-                  foregroundColor: Colors.grey.shade200,
-                  backgroundColor: Colors.transparent,
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.userId == '')
-                      IconButton(
-                        onPressed: () {
-                          Provider.of<AppProvider>(context, listen: false)
-                              .editUser();
-                        },
-                        icon: const Icon(Icons.edit),
-                      ),
-                    if (widget.userId == '')
-                      IconButton(
-                        onPressed: () async {
-                          await showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (_) {
-                              return _buildConfirmDeleteDialog(context);
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.delete),
-                      ),
-                    if (widget.userId != '')
-                      FollowButton(
-                        followed: _user,
-                        afterFollowCallback: () =>
-                            setState(() => _isFollowing = !_isFollowing),
-                        isFollowing: _isFollowing,
-                      ),
-                  ],
-                ),
-              ),
-              const Divider(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Joined: ${_user.joinedAt}',
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ],
-          );
+        : _buildUserInfo(context);
     return ui;
+  }
+
+  Column _buildUserInfo(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(_user.name),
+          subtitle: Text(_user.email!),
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage(_userAvatarUrl),
+            foregroundColor: Colors.grey.shade200,
+            backgroundColor: Colors.transparent,
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.userId == '')
+                IconButton(
+                  onPressed: () {
+                    Provider.of<AppProvider>(context, listen: false).editUser();
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
+              if (widget.userId == '')
+                IconButton(
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) {
+                        return _buildConfirmDeleteDialog(context);
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
+              if (widget.userId != '')
+                FollowButton(
+                  followed: _user,
+                  afterFollowCallback: () =>
+                      setState(() => _isFollowing = !_isFollowing),
+                  isFollowing: _isFollowing,
+                ),
+            ],
+          ),
+        ),
+        const Divider(height: 30.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Joined: ${_user.joinedAt}',
+            textAlign: TextAlign.left,
+          ),
+        ),
+      ],
+    );
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_social/navigation/app_link.dart';
+import 'package:fl_social/navigation/app_link.dart';
 
 class AppRouteParser extends RouteInformationParser<AppLink> {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/utils/screen_size.dart';
+import 'package:fl_social/utils/screen_size.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_social/providers/app_provider.dart';
+import 'package:fl_social/providers/app_provider.dart';
 
 class MenuItems {
   static const people = 'People';
@@ -23,7 +23,7 @@ class _FlutterSocialAppBarState extends State<FlutterSocialAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Flutter Social'),
+      title: const Text('Fl-Social'),
       automaticallyImplyLeading: false,
       actions: [
         ScreenSize.isSmall(context)

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/navigation/app_paths.dart';
-import 'package:flutter_social/providers/auth_page_provider.dart';
-import 'package:flutter_social/widgets/signin_form.dart';
-import 'package:flutter_social/widgets/signup_form.dart';
+import 'package:fl_social/navigation/app_paths.dart';
+import 'package:fl_social/providers/auth_page_provider.dart';
+import 'package:fl_social/widgets/signin_form.dart';
+import 'package:fl_social/widgets/signup_form.dart';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatelessWidget {

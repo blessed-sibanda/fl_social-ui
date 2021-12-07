@@ -1,8 +1,12 @@
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/services/base_api.dart';
-import 'package:flutter_social/utils/app_cache.dart';
+import 'dart:io';
+
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/services/base_api.dart';
+import 'package:fl_social/utils/app_cache.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:image_picker/image_picker.dart';
 
 class UsersApi extends BaseApi {
   Future<dynamic> createUser(User user) async {
@@ -13,17 +17,26 @@ class UsersApi extends BaseApi {
     return jsonResponse(response, dataKey: 'message');
   }
 
-  Future<dynamic> updateUser(User user) async {
+  Future<dynamic> updateUser(User user, String? imagePath) async {
     User currentUser = await AppCache().currentUser();
-    var response = await http.put(
-      Uri.parse('$baseUrl/api/users/${currentUser.id}'),
-      body: user.toJson(),
-      headers: {
-        'Authorization': 'Bearer ${currentUser.token}',
-      },
-    );
-    print(response.body);
-    return jsonResponse(response);
+    var url = Uri.parse('$baseUrl/api/users/${currentUser.id}');
+    var request = http.MultipartRequest('PUT', url);
+    request.fields['name'] = user.name;
+    request.fields['email'] = user.email!;
+    request.fields['about'] = user.about ?? '';
+    if (user.password != null) {
+      request.fields['password'] = user.password!;
+    }
+    if (imagePath != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'photo',
+          imagePath,
+        ),
+      );
+    }
+    request.headers['Authorization'] = 'Bearer ${currentUser.token}';
+    await request.send();
   }
 
   Future<List<dynamic>> findUsers() async {

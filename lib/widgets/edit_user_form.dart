@@ -1,15 +1,17 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/services/base_api.dart';
-import 'package:flutter_social/services/users_api.dart';
-import 'package:flutter_social/utils/text_utils.dart';
-import 'package:flutter_social/widgets/email_input_field.dart';
-import 'package:flutter_social/widgets/form_wrapper.dart';
-import 'package:flutter_social/widgets/text_input_field.dart';
-import 'package:flutter_social/widgets/password_input_field.dart';
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/services/base_api.dart';
+import 'package:fl_social/services/users_api.dart';
+import 'package:fl_social/utils/text_utils.dart';
+import 'package:fl_social/widgets/email_input_field.dart';
+import 'package:fl_social/widgets/form_wrapper.dart';
+import 'package:fl_social/widgets/text_input_field.dart';
+import 'package:fl_social/widgets/password_input_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class EditUserForm extends StatefulWidget {
   final String userId;
@@ -28,6 +30,7 @@ class _EditUserFormState extends State<EditUserForm> {
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   String _error = '';
   String _userAvatarUrl = '';
+  PickedFile? _image;
 
   final _usersApi = UsersApi();
 
@@ -74,8 +77,12 @@ class _EditUserFormState extends State<EditUserForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  radius: 40,
-                  backgroundImage: NetworkImage(_userAvatarUrl),
+                  radius: 50,
+                  backgroundImage: _image == null
+                      ? NetworkImage(_userAvatarUrl)
+                      : (kIsWeb
+                          ? NetworkImage(_image!.path)
+                          : FileImage(File(_image!.path)) as ImageProvider),
                   foregroundColor: Colors.grey.shade200,
                   backgroundColor: Colors.transparent,
                 ),
@@ -94,21 +101,24 @@ class _EditUserFormState extends State<EditUserForm> {
                       ),
                       elevation: 1.0,
                     ),
-                    IconButton(
-                        onPressed: () async {
-                          var image = await ImagePicker.platform
-                              .pickImage(source: ImageSource.camera);
-                        },
-                        color: Theme.of(context).primaryColor,
-                        tooltip: 'Camera',
-                        icon: const Icon(Icons.camera_alt_outlined)),
+                    if (!kIsWeb)
+                      IconButton(
+                          onPressed: () async {
+                            var image = await ImagePicker.platform
+                                .pickImage(source: ImageSource.camera);
+                            setState(() => _image = image);
+                          },
+                          color: Theme.of(context).primaryColor,
+                          tooltip: 'Take Photo',
+                          icon: const Icon(Icons.camera_alt_outlined)),
                     IconButton(
                         onPressed: () async {
                           var image = await ImagePicker.platform
                               .pickImage(source: ImageSource.gallery);
+                          setState(() => _image = image);
                         },
                         color: Theme.of(context).primaryColor,
-                        tooltip: 'Gallery',
+                        tooltip: 'Select Image',
                         icon: const Icon(Icons.image)),
                   ],
                 )
@@ -148,6 +158,11 @@ class _EditUserFormState extends State<EditUserForm> {
     );
   }
 
+  String? get _imagePath {
+    if (_image == null) return null;
+    return File(_image!.path).absolute.path; // only works in non-web
+  }
+
   void _updateUser() {
     if ((_formStateKey.currentState != null) &&
         (_formStateKey.currentState!.validate())) {
@@ -159,7 +174,7 @@ class _EditUserFormState extends State<EditUserForm> {
         about: _aboutController.text,
       );
 
-      _usersApi.updateUser(user).then((value) {
+      _usersApi.updateUser(user, _imagePath).then((value) {
         print('Value');
         print(value);
         if (value is ServiceApiError) {

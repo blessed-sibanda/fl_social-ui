@@ -1,6 +1,6 @@
 {
-    "name": "flutter_social",
-    "short_name": "flutter_social",
+    "name": "fl_social",
+    "short_name": "fl_social",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

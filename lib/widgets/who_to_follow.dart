@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/providers/app_provider.dart';
-import 'package:flutter_social/services/users_api.dart';
-import 'package:flutter_social/widgets/follow_button.dart';
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/providers/app_provider.dart';
+import 'package:fl_social/services/users_api.dart';
+import 'package:fl_social/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
 class WhoToFollow extends StatefulWidget {

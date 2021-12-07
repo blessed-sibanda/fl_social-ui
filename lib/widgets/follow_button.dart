@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/models/user.dart';
-import 'package:flutter_social/services/users_api.dart';
+import 'package:fl_social/models/user.dart';
+import 'package:fl_social/services/users_api.dart';
 
 class FollowButton extends StatelessWidget {
   final UsersApi _usersApi = UsersApi();

@@ -1,4 +1,4 @@
-import 'package:flutter_social/models/user.dart';
+import 'package:fl_social/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppCache {

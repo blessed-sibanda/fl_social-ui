@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social/navigation/app_route_parser.dart';
-import 'package:flutter_social/navigation/app_router.dart';
-import 'package:flutter_social/providers/app_provider.dart';
+import 'package:fl_social/navigation/app_route_parser.dart';
+import 'package:fl_social/navigation/app_router.dart';
+import 'package:fl_social/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, appProvider, child) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Social',
+            title: 'Fl-Social',
             theme: ThemeData(
               primarySwatch: Colors.lightGreen,
             ),
