@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:fl_social/models/user.dart';
 import 'package:fl_social/services/base_api.dart';
-import 'package:fl_social/utils/app_cache.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:image_picker/image_picker.dart';
 
 class UsersApi extends BaseApi {
   Future<dynamic> createUser(User user) async {
@@ -18,86 +14,68 @@ class UsersApi extends BaseApi {
   }
 
   Future<dynamic> updateUser(User user, String? imagePath) async {
-    User currentUser = await AppCache().currentUser();
-    var url = Uri.parse('$baseUrl/api/users/${currentUser.id}');
+    var url = Uri.parse('$baseUrl/api/signup');
     var request = http.MultipartRequest('PUT', url);
-    request.fields['name'] = user.name;
-    request.fields['email'] = user.email!;
-    request.fields['about'] = user.about ?? '';
+    request.fields['user[name]'] = user.name;
+    request.fields['user[email]'] = user.email!;
+    request.fields['user[about]'] = user.about ?? '';
+    request.fields['user[current_password]'] = user.currentPassword!;
     if (user.password != null) {
-      request.fields['password'] = user.password!;
+      request.fields['user[password]'] = user.password!;
     }
     if (imagePath != null) {
       request.files.add(
         await http.MultipartFile.fromPath(
-          'photo',
+          'user[avatar_image]',
           imagePath,
         ),
       );
     }
-    request.headers['Authorization'] = 'Bearer ${currentUser.token}';
-    await request.send();
+    request.headers['Authorization'] = await authToken;
+    request.headers['Accept'] = "*/*";
+    var response = await request.send();
+    if (response.statusCode == 422 || response.statusCode==400) {
+      return ServiceApiError(await response.stream.bytesToString(), 422);
+    }
+    return response;
   }
 
   Future<List<dynamic>> findUsers() async {
-    User currentUser = await AppCache().currentUser();
-
     var response = await http.get(
-      Uri.parse('$baseUrl/api/users/findpeople/${currentUser.id}'),
+      Uri.parse('$baseUrl/users/find_people.json'),
       headers: {
-        'Authorization': 'Bearer ${currentUser.token}',
+        'Authorization': await authToken,
+        'Accept': '*/*',
       },
     );
 
-    return json.decode(response.body);
+    return json.decode(response.body)['data'];
   }
 
-  String userAvatarUrl(String userId) {
-    return '$baseUrl/api/users/photo/$userId';
+  Future<void> followUser(int followId) async {
+    await http.put(Uri.parse('$baseUrl/users/$followId/follow'), headers: {
+      'Authorization': await authToken,
+    });
   }
 
-  Future<dynamic> followUser(String followId) async {
-    User currentUser = await AppCache().currentUser();
-
-    var response = await http.put(
-      Uri.parse('$baseUrl/api/users/follow'),
+  Future<void> unfollowUser(int unfollowId) async {
+    await http.put(
+      Uri.parse('$baseUrl/users/$unfollowId/unfollow'),
       headers: {
-        'Authorization': 'Bearer ${currentUser.token}',
-      },
-      body: {
-        'userId': currentUser.id,
-        'followId': followId,
+        'Authorization': await authToken,
       },
     );
-    return jsonResponse(response);
   }
 
-  Future<dynamic> unfollowUser(String unfollowId) async {
-    User currentUser = await AppCache().currentUser();
-
-    var response = await http.put(
-      Uri.parse('$baseUrl/api/users/unfollow'),
-      headers: {
-        'Authorization': 'Bearer ${currentUser.token}',
-      },
-      body: {
-        'userId': currentUser.id,
-        'unfollowId': unfollowId,
-      },
-    );
-    return jsonResponse(response);
-  }
-
-  Future<dynamic> getUser(String userId) async {
-    User currentUser = await AppCache().currentUser();
-
+  Future<dynamic> getUser([int userId = -1]) async {
     var response = await http.get(
-      Uri.parse(
-          '$baseUrl/api/users/${userId.isEmpty ? currentUser.id! : userId}'),
+      Uri.parse(userId == -1 ? '$baseUrl/users/me' : '$baseUrl/users/$userId'),
       headers: {
-        'Authorization': 'Bearer ${currentUser.token}',
+        'Authorization': await authToken,
+        "Accept": "*/*",
       },
     );
-    return jsonResponse(response);
+
+    return jsonDecode(response.body);
   }
 }

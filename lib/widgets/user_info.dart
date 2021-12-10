@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fl_social/models/user.dart';
 import 'package:fl_social/providers/app_provider.dart';
 import 'package:fl_social/services/users_api.dart';
-import 'package:fl_social/utils/app_cache.dart';
 import 'package:fl_social/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
 class UserInfo extends StatefulWidget {
-  final String userId;
+  final int userId;
 
   const UserInfo({
     Key? key,
@@ -27,18 +26,20 @@ class _UserInfoState extends State<UserInfo> {
 
   void _loadData() {
     _usersApi.getUser(widget.userId).then((userJson) {
-      AppCache().currentUser().then((currentUser) {
+      setState(() {
+        _user = User.fromJson(userJson);
+        _userAvatarUrl = _user.avatarUrl ?? '';
+        _loading = false;
+      });
+
+      _usersApi.getUser().then((currentUserJson) {
+        User currentUser = User.fromJson(currentUserJson);
+
         for (var u in _user.followers!) {
           if (u.id == currentUser.id!) {
             setState(() => _isFollowing = true);
           }
         }
-      });
-
-      setState(() {
-        _user = User.fromJson(userJson);
-        _userAvatarUrl = _usersApi.userAvatarUrl(_user.id!);
-        _loading = false;
       });
     });
   }
@@ -81,14 +82,14 @@ class _UserInfoState extends State<UserInfo> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (widget.userId == '')
+              if (widget.userId == -1)
                 IconButton(
                   onPressed: () {
                     Provider.of<AppProvider>(context, listen: false).editUser();
                   },
                   icon: const Icon(Icons.edit),
                 ),
-              if (widget.userId == '')
+              if (widget.userId == -1)
                 IconButton(
                   onPressed: () async {
                     await showDialog(
@@ -101,7 +102,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   icon: const Icon(Icons.delete),
                 ),
-              if (widget.userId != '')
+              if (widget.userId != -1)
                 FollowButton(
                   followed: _user,
                   afterFollowCallback: () =>
@@ -114,9 +115,14 @@ class _UserInfoState extends State<UserInfo> {
         const Divider(height: 30.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Joined: ${_user.joinedAt}',
-            textAlign: TextAlign.left,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_user.about ?? ''),
+              const SizedBox(height: 10.0),
+              Text('Joined: ${_user.joinedAt}'),
+            ],
           ),
         ),
       ],

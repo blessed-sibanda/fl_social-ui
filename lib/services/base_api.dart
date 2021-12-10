@@ -1,3 +1,4 @@
+import 'package:fl_social/utils/app_cache.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
@@ -9,6 +10,11 @@ class ServiceApiError {
 
 abstract class BaseApi {
   String baseUrl = 'http://192.168.43.72:3000';
+  final appCache = AppCache();
+
+  Future<String> get authToken async {
+    return await appCache.userToken();
+  }
 
   dynamic jsonResponse(
     Response response, {

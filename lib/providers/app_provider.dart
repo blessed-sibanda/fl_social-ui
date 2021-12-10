@@ -10,12 +10,12 @@ class AppProvider extends ChangeNotifier {
   bool _loggedIn = false;
   bool _didSelectUser = false;
   bool _onPeople = false;
-  String _selectedUser = '';
+  int _selectedUser = -1;
   bool _editingUser = false;
 
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
-  String get selectedUser => _selectedUser;
+  int get selectedUser => _selectedUser;
   bool get editingUser => _editingUser;
 
   bool get didSelectUser => _didSelectUser;
@@ -35,8 +35,8 @@ class AppProvider extends ChangeNotifier {
     });
   }
 
-  void logIn(Map<String, dynamic> userData) async {
-    await _appCache.cacheUserData(userData);
+  void logIn(String token) async {
+    await _appCache.cacheUserToken(token);
     _loggedIn = true;
     notifyListeners();
   }
@@ -54,7 +54,7 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goToProfile({String userId = ''}) {
+  void goToProfile({int userId = -1}) {
     _reset();
     _didSelectUser = true;
     _selectedUser = userId;

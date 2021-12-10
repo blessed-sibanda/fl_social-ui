@@ -5,7 +5,7 @@ class AppLink {
   static const String kUserIdParam = 'userId';
 
   String? location;
-  String? userId;
+  int? userId;
 
   AppLink({this.location, this.userId});
 
@@ -20,7 +20,7 @@ class AppLink {
 
     final link = AppLink()..location = uri.path;
 
-    trySet(AppLink.kUserIdParam, (s) => link.userId = s);
+    trySet(AppLink.kUserIdParam, (s) => link.userId = int.tryParse(s));
 
     return link;
   }
@@ -41,7 +41,7 @@ class AppLink {
 
       case AppPaths.userPath:
         var loc = '${AppPaths.userPath}?';
-        loc += addKeyValuePair(key: kUserIdParam, value: userId);
+        loc += addKeyValuePair(key: kUserIdParam, value: userId.toString());
         return Uri.encodeFull(loc);
 
       default:

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:fl_social/providers/password_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_social/models/user.dart';
 import 'package:fl_social/providers/app_provider.dart';
@@ -14,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class EditUserForm extends StatefulWidget {
-  final String userId;
+  final int userId;
   const EditUserForm({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -25,11 +27,12 @@ class _EditUserFormState extends State<EditUserForm> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _currentPasswordController = TextEditingController();
   final _aboutController = TextEditingController();
 
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   String _error = '';
-  String _userAvatarUrl = '';
+  String? _userAvatarUrl;
   PickedFile? _image;
 
   final _usersApi = UsersApi();
@@ -40,10 +43,11 @@ class _EditUserFormState extends State<EditUserForm> {
     _usersApi.getUser(widget.userId).then((userJson) {
       setState(() {
         _user = User.fromJson(userJson);
-        _userAvatarUrl = _usersApi.userAvatarUrl(_user.id!);
+        _userAvatarUrl = _user.avatarUrl;
         _nameController.text = _user.name;
         _emailController.text = _user.email!;
         _aboutController.text = _user.about ?? '';
+        _currentPasswordController.text = '';
       });
     });
   }
@@ -60,100 +64,117 @@ class _EditUserFormState extends State<EditUserForm> {
     _emailController.dispose();
     _passwordController.dispose();
     _aboutController.dispose();
+    _currentPasswordController.dispose();
     super.dispose();
   }
 
+  final passwordProvider = PasswordProvider();
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formStateKey,
-      child: FormWrapper(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextUtils.cardHeaderText(context, 'Edit Profile'),
-            const Divider(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: _image == null
-                      ? NetworkImage(_userAvatarUrl)
-                      : (kIsWeb
-                          ? NetworkImage(_image!.path)
-                          : FileImage(File(_image!.path)) as ImageProvider),
-                  foregroundColor: Colors.grey.shade200,
-                  backgroundColor: Colors.transparent,
-                ),
-                const SizedBox(height: 13.0),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MaterialButton(
-                      onPressed: null,
-                      disabledColor: Colors.grey.shade200,
-                      child: Row(
-                        children: const [
-                          Text('Upload Image'),
-                          Icon(Icons.upload),
-                        ],
+    return ChangeNotifierProvider(
+      create: (_) => passwordProvider,
+      child: Consumer<PasswordProvider>(
+        builder: (_, __, ___) {
+          return Form(
+            key: _formStateKey,
+            child: FormWrapper(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextUtils.cardHeaderText(context, 'Edit Profile'),
+                  const Divider(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _image == null
+                            ? NetworkImage(_userAvatarUrl ?? '')
+                            : (kIsWeb
+                                ? NetworkImage(_image!.path)
+                                : FileImage(File(_image!.path))
+                                    as ImageProvider),
+                        foregroundColor: Colors.grey.shade200,
+                        backgroundColor: Colors.transparent,
                       ),
-                      elevation: 1.0,
-                    ),
-                    if (!kIsWeb)
-                      IconButton(
-                          onPressed: () async {
-                            var image = await ImagePicker.platform
-                                .pickImage(source: ImageSource.camera);
-                            setState(() => _image = image);
-                          },
-                          color: Theme.of(context).primaryColor,
-                          tooltip: 'Take Photo',
-                          icon: const Icon(Icons.camera_alt_outlined)),
-                    IconButton(
-                        onPressed: () async {
-                          var image = await ImagePicker.platform
-                              .pickImage(source: ImageSource.gallery);
-                          setState(() => _image = image);
-                        },
-                        color: Theme.of(context).primaryColor,
-                        tooltip: 'Select Image',
-                        icon: const Icon(Icons.image)),
-                  ],
-                )
-              ],
+                      const SizedBox(height: 13.0),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          MaterialButton(
+                            onPressed: null,
+                            disabledColor: Colors.grey.shade200,
+                            child: Row(
+                              children: const [
+                                Text('Upload Image'),
+                                Icon(Icons.upload),
+                              ],
+                            ),
+                            elevation: 1.0,
+                          ),
+                          if (!kIsWeb)
+                            IconButton(
+                                onPressed: () async {
+                                  var image = await ImagePicker.platform
+                                      .pickImage(source: ImageSource.camera);
+                                  setState(() => _image = image);
+                                },
+                                color: Theme.of(context).primaryColor,
+                                tooltip: 'Take Photo',
+                                icon: const Icon(Icons.camera_alt_outlined)),
+                          IconButton(
+                              onPressed: () async {
+                                var image = await ImagePicker.platform
+                                    .pickImage(source: ImageSource.gallery);
+                                setState(() => _image = image);
+                              },
+                              color: Theme.of(context).primaryColor,
+                              tooltip: 'Select Image',
+                              icon: const Icon(Icons.image)),
+                        ],
+                      )
+                    ],
+                  ),
+                  if (_error.isNotEmpty)
+                    Text(_error, style: const TextStyle(color: Colors.red)),
+                  TextInputField(label: 'Name', controller: _nameController),
+                  TextInputField(
+                    label: 'About',
+                    controller: _aboutController,
+                    multiLine: true,
+                    validator: (_) {},
+                  ),
+                  EmailInputField(emailController: _emailController),
+                  PasswordInputField(
+                    controller: _currentPasswordController,
+                    onEdit: true,
+                    label: 'Current Password',
+                  ),
+                  PasswordInputField(
+                      controller: _passwordController, onEdit: true),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        child: const Text('Cancel'),
+                        onPressed: () =>
+                            Provider.of<AppProvider>(context, listen: false)
+                                .goToProfile(),
+                      ),
+                      const SizedBox(width: 20.0),
+                      ElevatedButton(
+                        child: const Text('Update User'),
+                        onPressed: _updateUser,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            if (_error.isNotEmpty)
-              Text(_error, style: const TextStyle(color: Colors.red)),
-            TextInputField(label: 'Name', controller: _nameController),
-            TextInputField(
-              label: 'About',
-              controller: _aboutController,
-              multiLine: true,
-              validator: (_) {},
-            ),
-            EmailInputField(emailController: _emailController),
-            PasswordInputField(controller: _passwordController, onEdit: true),
-            const SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  child: const Text('Cancel'),
-                  onPressed: () =>
-                      Provider.of<AppProvider>(context, listen: false)
-                          .goToProfile(),
-                ),
-                const SizedBox(width: 20.0),
-                ElevatedButton(
-                  child: const Text('Update User'),
-                  onPressed: _updateUser,
-                ),
-              ],
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -164,6 +185,7 @@ class _EditUserFormState extends State<EditUserForm> {
   }
 
   void _updateUser() {
+    passwordProvider.validate();
     if ((_formStateKey.currentState != null) &&
         (_formStateKey.currentState!.validate())) {
       User user = User(
@@ -172,13 +194,17 @@ class _EditUserFormState extends State<EditUserForm> {
         password:
             _passwordController.text.isEmpty ? null : _passwordController.text,
         about: _aboutController.text,
+        currentPassword: _currentPasswordController.text,
       );
 
       _usersApi.updateUser(user, _imagePath).then((value) {
-        print('Value');
-        print(value);
         if (value is ServiceApiError) {
-          setState(() => _error = value.message);
+          Map<String, dynamic> errors = jsonDecode(value.message)['errors'];
+          if (errors.keys.contains('current_password')) {
+            passwordProvider.invalidate();
+          } else {
+            setState(() => _error = value.message);
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User details updated successfully!')),

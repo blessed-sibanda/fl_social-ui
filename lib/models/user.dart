@@ -1,26 +1,28 @@
 import 'package:intl/intl.dart';
 
 class User {
-  String? id;
+  int? id;
   String name;
   String? email;
   String? password;
   DateTime? createdAt;
-  String? token;
   List<User>? followers;
   List<User>? following;
   String? about;
+  String? currentPassword;
+  String? avatarUrl;
 
   User({
     this.id,
     required this.name,
-    required this.email,
+    this.email,
     this.password,
     this.createdAt,
-    this.token,
     this.followers,
     this.following,
     this.about,
+    this.currentPassword,
+    this.avatarUrl,
   }) {
     followers ??= [];
     following ??= [];
@@ -30,25 +32,28 @@ class User {
     final followers = <User>[];
     final following = <User>[];
     if (json.containsKey('followers')) {
-      for (final userJson in json['followers']) {
+      for (final userJson in json['followers']['data']) {
         followers.add(User.fromJson(userJson));
       }
     }
     if (json.containsKey('following')) {
-      for (final userJson in json['following']) {
+      for (final userJson in json['following']['data']) {
         following.add(User.fromJson(userJson));
       }
     }
+
     return User(
-      id: json['_id'],
+      id: json['id'],
       name: json['name'],
       email: json['email'] as String?,
       password: json['password'] as String?,
       about: json['about'] as String?,
-      createdAt:
-          json.containsKey('created') ? DateTime.parse(json['created']) : null,
+      createdAt: json.containsKey('created_at')
+          ? DateTime.parse(json['created_at'])
+          : null,
       followers: followers,
       following: following,
+      avatarUrl: json['avatar_url'] as String?,
     );
   }
 
@@ -59,7 +64,8 @@ class User {
       'about': about,
     };
     if (password != null) userMap['password'] = password;
-    if (id != null) userMap['id'] = id;
+    if (id != null) userMap['id'] = id as String?;
+    if (currentPassword != null) userMap['current_password'] = currentPassword;
     return userMap;
   }
 

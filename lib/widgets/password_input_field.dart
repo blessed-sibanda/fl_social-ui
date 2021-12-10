@@ -1,13 +1,17 @@
+import 'package:fl_social/providers/password_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_social/utils/form_validators.dart';
+import 'package:provider/provider.dart';
 
 class PasswordInputField extends StatefulWidget {
   final TextEditingController controller;
   final bool onEdit;
+  final String? label;
 
   const PasswordInputField({
     Key? key,
     required this.controller,
+    this.label = 'Password',
     this.onEdit = false,
   }) : super(key: key);
 
@@ -30,7 +34,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
       textInputAction: TextInputAction.done,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: widget.label!,
         suffix: GestureDetector(
           onTap: _toggleObscurePassword,
           child: Icon(
@@ -38,15 +42,20 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
             color: Colors.black45,
           ),
         ),
-        helperText: widget.onEdit
+        helperText: widget.onEdit && widget.label == 'Password'
             ? 'Leave this field blank if you do not want to change your password'
             : null,
         helperMaxLines: 2,
       ),
-      validator: (value) => FormValidators.userPasswordField(
-        value,
-        allowBlank: widget.onEdit,
-      ),
+      validator: (value) =>
+          Provider.of<PasswordProvider>(context, listen: false).isInvalid &&
+                  widget.label != 'Password'
+              ? '${widget.label} is invalid'
+              : FormValidators.userPasswordField(
+                  value,
+                  allowBlank: widget.onEdit && widget.label == 'Password',
+                  label: widget.label!,
+                ),
     );
   }
 }

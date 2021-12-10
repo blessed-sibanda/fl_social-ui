@@ -19,13 +19,14 @@ class FormValidators {
     return null;
   }
 
-  static String? userPasswordField(String? value, {bool allowBlank = false}) {
+  static String? userPasswordField(String? value,
+      {bool allowBlank = false, String label = 'Password'}) {
     if (value == null) return null;
     if (value.isEmpty) {
       if (allowBlank) return null;
-      return 'Password is required';
+      return '$label is required';
     } else if (value.length < 6) {
-      return 'Password should be at least 6 characters long';
+      return '$label should be at least 6 characters long';
     }
     return null;
   }

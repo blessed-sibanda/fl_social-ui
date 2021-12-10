@@ -16,20 +16,16 @@ class _WhoToFollowState extends State<WhoToFollow> {
   List<User> _usersToFollow = [];
   bool _loading = true;
   final _usersApi = UsersApi();
-  Map<String, String> _usersAvatarUrls = {};
 
   void loadData() {
     _usersApi.findUsers().then((data) {
       List<User> usersList = [];
-      Map<String, String> avatars = {};
       usersList = data.map((u) {
         var user = User.fromJson(u);
-        avatars[user.id!] = _usersApi.userAvatarUrl(user.id!);
         return user;
       }).toList();
       setState(() {
         _usersToFollow = usersList;
-        _usersAvatarUrls = avatars;
         _loading = false;
       });
     });
@@ -69,9 +65,8 @@ class _WhoToFollowState extends State<WhoToFollow> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   User user = _usersToFollow[index];
-                  final avatarUrl = _usersAvatarUrls[user.id!];
                   return InkWell(
-                    child: _buildUserTile(context, user, avatarUrl!),
+                    child: _buildUserTile(context, user),
                     onTap: () => _goToUserProfile(user),
                   );
                 },
@@ -86,7 +81,7 @@ class _WhoToFollowState extends State<WhoToFollow> {
       Provider.of<AppProvider>(context, listen: false)
           .goToProfile(userId: user.id!);
 
-  Widget _buildUserTile(BuildContext context, User user, String avatarUrl) {
+  Widget _buildUserTile(BuildContext context, User user) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: ListTile(
@@ -94,7 +89,7 @@ class _WhoToFollowState extends State<WhoToFollow> {
         title: Text(user.name),
         leading: CircleAvatar(
           radius: 25,
-          backgroundImage: NetworkImage(avatarUrl),
+          backgroundImage: NetworkImage(user.avatarUrl ?? ''),
           backgroundColor: Colors.transparent,
         ),
         trailing: FollowButton(followed: user, afterFollowCallback: loadData),
